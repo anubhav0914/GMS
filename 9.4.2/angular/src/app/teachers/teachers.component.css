@@ -1,0 +1,10 @@
+.modal-backdrop {
+  z-index: 1040;
+}
+.modal {
+  z-index: 1050;
+}
+.badge {
+  font-size: 0.85rem;
+}
+ 

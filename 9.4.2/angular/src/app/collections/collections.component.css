@@ -1,0 +1,22 @@
+.table-hover tbody tr:hover {
+  background-color: #f8f9fa;
+  transition: 0.2s ease;
+}
+ 
+.badge {
+  font-size: 0.85rem;
+  padding: 0.45em 0.6em;
+}
+.input-group .form-control {
+  border-left: none;
+  box-shadow: none !important;
+}
+ 
+.input-group .input-group-text {
+  background-color: #f8f9fa;
+  border-right: none;
+}
+ 
+.input-group:focus-within {
+  box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.25);
+}

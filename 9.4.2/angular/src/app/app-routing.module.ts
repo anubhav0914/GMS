@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AppRouteGuard } from '@shared/auth/auth-route-guard';
+import { AppRouteGuard } from '../../src/shared/auth/auth-route-guard';
 import { AppComponent } from './app.component';
+// import {About} from './about/about.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { StudentComponent } from './student/student.component';
+import { TeachersComponent } from './teachers/teachers.component';
+import { DisbursementsComponent } from './disbursements/disbursements.component'
+import { CollectionsComponent } from './collections/collections.component';
+import {FeeManagementComponent} from './fee-management/fee-management.component';
 
 @NgModule({
     imports: [
@@ -43,6 +50,36 @@ import { AppComponent } from './app.component';
                         loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
                         canActivate: [AppRouteGuard]
                     },
+                    {
+                        path:'dashboard',
+                        canActivate: [AppRouteGuard],
+                        component: DashboardComponent
+                    },
+                    {
+                        path:'student',
+                        canActivate: [AppRouteGuard],
+                        component: StudentComponent,
+                    },
+                    {
+                        path:'teacher',
+                        canActivate: [AppRouteGuard],
+                        component:TeachersComponent,
+                    },
+                    {
+                        path:'feesManagement',
+                        canActivate: [AppRouteGuard],
+                       component:FeeManagementComponent,
+                    },
+                    {
+                        path: 'collections',
+                        canActivate: [AppRouteGuard],
+                        component: CollectionsComponent
+                    },
+                    {
+                        path:'disbursements',
+                        canActivate: [AppRouteGuard],
+                        component: DisbursementsComponent, 
+                    }
                 ]
             }
         ])

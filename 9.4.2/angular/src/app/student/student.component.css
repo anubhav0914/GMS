@@ -1,0 +1,77 @@
+.student-management {
+  padding: 20px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.search-filter {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.student-table th, .student-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+.badge {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+.status.active {
+  background-color: #d1fae5;
+  color: #065f46;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 800px;
+}
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.bg-light {
+  background-color: #f8f9fa !important;
+}

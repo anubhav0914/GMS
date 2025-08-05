@@ -1,0 +1,86 @@
+<div class="fee-management-container">
+  <!-- Header Section -->
+  <div class="header">
+    <div class="header-content">
+      <h1 class="title">Fee Management</h1>
+      <p class="subtitle">Manage fee types and amounts for different services</p>
+    </div>
+    <button class="add-button" (click)="onAddFeeType()">
+      <lucide-icon [img]="Plus" size="16"></lucide-icon>
+      Add Fee Type
+    </button>
+  </div>
+
+  <!-- Fee Cards Grid -->
+  <div class="fee-cards-grid">
+    <div class="fee-card" *ngFor="let fee of feeTypes">
+      <div class="card-header">
+        <div class="icon-container">
+          <lucide-icon [img]="DollarSign" size="20" class="dollar-icon"></lucide-icon>
+        </div>
+        <span class="status-badge" [ngClass]="getStatusClass(fee.status)">
+          {{ fee.status }}
+        </span>
+      </div>
+      
+      <div class="card-content">
+        <h3 class="fee-name">{{ fee.name }}</h3>
+        <div class="fee-amount">${{ fee.amount }}</div>
+        <p class="fee-description">{{ fee.description }}</p>
+      </div>
+      
+      <div class="card-actions">
+        <button class="action-btn edit-btn" (click)="onEditFee(fee.id)" title="Edit">
+          <lucide-icon [img]="Edit" size="16"></lucide-icon>
+        </button>
+        <button class="action-btn delete-btn" (click)="onDeleteFee(fee.id)" title="Delete">
+          <lucide-icon [img]="Trash2" size="16"></lucide-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fee Structure Summary Table -->
+  <div class="table-section">
+    <h2 class="table-title">Fee Structure Summary</h2>
+    
+    <div class="table-container">
+      <table class="fee-table">
+        <thead>
+          <tr>
+            <th>FEE TYPE</th>
+            <th>AMOUNT</th>
+            <th>FREQUENCY</th>
+            <th>STATUS</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fee of feeTypes">
+            <td>
+              <div class="fee-type-cell">
+                <div class="fee-type-name">{{ fee.name }}</div>
+                <div class="fee-type-description">{{ fee.description }}</div>
+              </div>
+            </td>
+            <td class="amount-cell">${{ fee.amount }}</td>
+            <td class="frequency-cell">{{ fee.frequency }}</td>
+            <td>
+              <span class="table-status-badge" [ngClass]="getStatusClass(fee.status)">
+                {{ fee.status }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button class="table-action-btn edit-btn" (click)="onEditFee(fee.id)" title="Edit">
+                <lucide-icon [img]="Edit" size="14"></lucide-icon>
+              </button>
+              <button class="table-action-btn delete-btn" (click)="onDeleteFee(fee.id)" title="Delete">
+                <lucide-icon [img]="Trash2" size="14"></lucide-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

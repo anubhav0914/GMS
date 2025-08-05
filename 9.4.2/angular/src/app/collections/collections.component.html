@@ -1,0 +1,134 @@
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="fw-bold mb-1">Collections</h3>
+    </div>
+  </div>
+  <!-- Stat Summary Cards -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <small class="text-muted">Current Balance</small>
+          <div class="d-flex justify-content-between align-items-center my-2">
+            <h4 class="fw-bold text-success mb-0">$123,456.78</h4>
+            <i class="bi bi-graph-up-arrow text-success fs-4"></i>
+          </div>
+          <div class="text-muted small">SACCO Account Balance</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <small class="text-muted">Today's Collections</small>
+          <div class="d-flex justify-content-between align-items-center my-2">
+            <h4 class="fw-bold text-success mb-0">${{ totalAmount }}</h4>
+            <i class="bi bi-arrow-up-right-circle text-success fs-4"></i>
+          </div>
+          <!-- <div class="text-muted small">{{ filteredSubmissions.length }} submissions</div> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body">
+          <small class="text-muted">Monthly Total</small>
+          <div class="d-flex justify-content-between align-items-center my-2">
+            <h4 class="fw-bold text-primary mb-0">$45,678</h4>
+            <i class="bi bi-bar-chart-line text-primary fs-4"></i>
+          </div>
+          <div class="text-muted small">154 submissions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Search & Filter -->
+  <div class="row g-3 align-items-center mb-4">
+    <div class="col-md-6">
+  <div class="input-group shadow-sm rounded-3 overflow-hidden">
+    <span class="input-group-text bg-white border-end-0">
+      <i class="bi bi-search text-muted"></i>
+    </span>
+    <input
+      type="text"
+      class="form-control border-start-0"
+      placeholder="Search by student name, ref number, or submission ID..."
+      [(ngModel)]="searchTerm"
+    />
+  </div>
+</div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="filterType">
+        <option value="all">All Fee Types</option>
+        <option *ngFor="let type of ['Tuition Fee', 'Lab Fee', 'Annual Fee', 'Sports Fee', 'Library Fee', 'Exam Fee']" [value]="type">
+          {{ type }}
+        </option>
+      </select>
+    </div>
+    <!-- <div class="col-md-3 text-end">
+      <span class="fw-semibold text-primary fs-6">Total Amount: ₹{{ totalAmount }}</span>
+    </div> -->
+  </div>
+ 
+  <!-- Export Button -->
+  <!-- <div class="text-end mb-3">
+    <button class="btn btn-outline-primary" (click)="onExport()">
+      <i class="bi bi-download me-1"></i> Export
+    </button>
+  </div> -->
+ 
+  <!-- Submissions Table -->
+  <div class="table-responsive shadow-sm">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Student Ref</th>
+          <th>Student Name</th>
+          <th>Fee Type</th>
+          <th>Amount</th>
+          <th>Transaction ID</th>
+          <th>Status</th>
+          <th>Payment Method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredSubmissions">
+          <td>{{ item.date }}</td>
+          <td>{{ item.time }}</td>
+          <td>{{ item.studentRef }}</td>
+          <td>{{ item.studentName }}</td>
+          <td>{{ item.feeType }}</td>
+          <td class="fw-semibold text-success">+₹{{ item.amount }}</td>
+          <td>
+            <span class="badge bg-light border text-secondary rounded-pill px-2">
+              {{ item.submissionId }}
+            </span>
+          </td>
+          <td>
+            <span
+              class="badge rounded-pill px-3 py-1 fw-medium"
+              [ngClass]="{
+                'bg-success-subtle text-success': item.status === 'Submitted to SACCO',
+                'bg-warning-subtle text-warning': item.status === 'Pending',
+                'bg-danger-subtle text-danger': item.status === 'Failed'
+              }"
+            >
+              {{ item.status }}
+            </span>
+          </td>
+          <td>{{ item.paymentMethod }}</td>
+        </tr>
+        <tr *ngIf="filteredSubmissions.length === 0">
+          <td colspan="10" class="text-center text-muted py-3">
+            No matching records found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />

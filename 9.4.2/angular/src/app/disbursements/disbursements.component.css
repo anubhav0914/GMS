@@ -1,0 +1,39 @@
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.bg-success {
+  background-color: var(--success);
+}
+
+.bg-warning {
+  background-color: var(--warning);
+}
+
+.bg-error {
+  background-color: var(--error);
+}
+
+.hover\:bg-indigo-700:hover {
+  background-color: hsl(239, 84%, 67%);
+}
+
+.hover\:bg-red-600:hover {
+  background-color: hsl(0, 84%, 55%);
+}
