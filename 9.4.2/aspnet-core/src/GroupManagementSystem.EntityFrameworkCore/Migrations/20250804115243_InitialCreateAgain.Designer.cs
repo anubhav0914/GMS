@@ -4,6 +4,7 @@ using GroupManagementSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GroupManagementSystem.Migrations
 {
     [DbContext(typeof(GroupManagementSystemDbContext))]
-    partial class GroupManagementSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250804115243_InitialCreateAgain")]
+    partial class InitialCreateAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1600,9 +1603,6 @@ namespace GroupManagementSystem.Migrations
                     b.Property<long?>("GroupParticipantId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Mode")
-                        .HasColumnType("int");
-
                     b.Property<long>("PaymentStructureId")
                         .HasColumnType("bigint");
 
@@ -1614,9 +1614,6 @@ namespace GroupManagementSystem.Migrations
 
                     b.Property<long>("TransId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1637,25 +1634,13 @@ namespace GroupManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Emial")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<long>("GroupTypeId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("MemberType")
                         .HasColumnType("int");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RefNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("TenantId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1672,9 +1657,6 @@ namespace GroupManagementSystem.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -1722,9 +1704,6 @@ namespace GroupManagementSystem.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
 
@@ -1734,14 +1713,11 @@ namespace GroupManagementSystem.Migrations
                     b.Property<string>("RefNo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<long>("TenantId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

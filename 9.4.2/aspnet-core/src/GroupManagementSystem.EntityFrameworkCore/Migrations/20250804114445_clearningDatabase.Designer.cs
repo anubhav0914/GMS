@@ -4,6 +4,7 @@ using GroupManagementSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GroupManagementSystem.Migrations
 {
     [DbContext(typeof(GroupManagementSystemDbContext))]
-    partial class GroupManagementSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250804114445_clearningDatabase")]
+    partial class clearningDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1583,171 +1586,6 @@ namespace GroupManagementSystem.Migrations
                     b.ToTable("AbpUsers");
                 });
 
-            modelBuilder.Entity("GroupManagementSystem.Models.GMSTransaction", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("GroupParticipantId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Mode")
-                        .HasColumnType("int");
-
-                    b.Property<long>("PaymentStructureId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("RefNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<long>("TransId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupParticipantId");
-
-                    b.HasIndex("PaymentStructureId");
-
-                    b.HasIndex("TransId");
-
-                    b.ToTable("GMSTransactions", (string)null);
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.GroupParticipant", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Emial")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("GroupTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("MemberType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RefNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("TenantId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupTypeId");
-
-                    b.ToTable("GroupParticipants", (string)null);
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.GroupType", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GroupTypes", (string)null);
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.PaymentStructure", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<long>("GroupId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("GroupTypeId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupTypeId");
-
-                    b.ToTable("PaymentStructure", (string)null);
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.Transaction", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("GroupId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Mode")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RefNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<long>("TenantId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Transactions", (string)null);
-                });
-
             modelBuilder.Entity("GroupManagementSystem.MultiTenancy.Tenant", b =>
                 {
                     b.Property<int>("Id")
@@ -2030,53 +1868,6 @@ namespace GroupManagementSystem.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
-            modelBuilder.Entity("GroupManagementSystem.Models.GMSTransaction", b =>
-                {
-                    b.HasOne("GroupManagementSystem.Models.GroupParticipant", "GroupParticipant")
-                        .WithMany()
-                        .HasForeignKey("GroupParticipantId");
-
-                    b.HasOne("GroupManagementSystem.Models.PaymentStructure", "PaymentStructure")
-                        .WithMany("GMSTransactions")
-                        .HasForeignKey("PaymentStructureId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GroupManagementSystem.Models.Transaction", "Transaction")
-                        .WithMany("GMSTransactions")
-                        .HasForeignKey("TransId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroupParticipant");
-
-                    b.Navigation("PaymentStructure");
-
-                    b.Navigation("Transaction");
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.GroupParticipant", b =>
-                {
-                    b.HasOne("GroupManagementSystem.Models.GroupType", "GroupType")
-                        .WithMany("GroupParticipants")
-                        .HasForeignKey("GroupTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("GroupType");
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.PaymentStructure", b =>
-                {
-                    b.HasOne("GroupManagementSystem.Models.GroupType", "GroupType")
-                        .WithMany("PaymentStructures")
-                        .HasForeignKey("GroupTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("GroupType");
-                });
-
             modelBuilder.Entity("GroupManagementSystem.MultiTenancy.Tenant", b =>
                 {
                     b.HasOne("GroupManagementSystem.Authorization.Users.User", "CreatorUser")
@@ -2173,23 +1964,6 @@ namespace GroupManagementSystem.Migrations
                     b.Navigation("Settings");
 
                     b.Navigation("Tokens");
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.GroupType", b =>
-                {
-                    b.Navigation("GroupParticipants");
-
-                    b.Navigation("PaymentStructures");
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.PaymentStructure", b =>
-                {
-                    b.Navigation("GMSTransactions");
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.Transaction", b =>
-                {
-                    b.Navigation("GMSTransactions");
                 });
 #pragma warning restore 612, 618
         }
