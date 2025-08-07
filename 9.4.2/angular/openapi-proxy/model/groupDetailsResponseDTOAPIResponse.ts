@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GroupDetailsResponseDTO } from './groupDetailsResponseDTO';
 
 
-export const TransactionMode = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2
-} as const;
-export type TransactionMode = typeof TransactionMode[keyof typeof TransactionMode];
+export interface GroupDetailsResponseDTOAPIResponse { 
+    result?: GroupDetailsResponseDTO;
+    message?: string | null;
+}
 

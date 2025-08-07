@@ -9,9 +9,8 @@
  */
 
 
-export interface GroupTypeResponseDTO { 
-    id?: number;
-    name?: string | null;
-    description?: string | null;
+export interface BooleanAPIResponse { 
+    result?: boolean;
+    message?: string | null;
 }
 

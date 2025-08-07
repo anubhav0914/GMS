@@ -7,11 +7,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { GroupParticipantResponseDTO } from './groupParticipantResponseDTO';
 
 
-export interface GroupParticipantResponseDTOPagedResultDto { 
-    items?: Array<GroupParticipantResponseDTO> | null;
-    totalCount?: number;
+export interface GroupParticipantsUpdateDTO { 
+    id?: number;
+    userName?: string | null;
+    email?: string | null;
+    phoneNumber?: string | null;
 }
 

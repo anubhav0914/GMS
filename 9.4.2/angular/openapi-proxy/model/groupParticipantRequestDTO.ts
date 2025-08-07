@@ -12,10 +12,10 @@ import { MemberType } from './memberType';
 
 export interface GroupParticipantRequestDTO { 
     memberType?: MemberType;
+    groupId?: number;
     userName?: string | null;
-    emial?: string | null;
+    email?: string | null;
     phoneNumber?: string | null;
-    groupTypeId?: number;
 }
 export namespace GroupParticipantRequestDTO {
 }

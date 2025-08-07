@@ -17,15 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CombinedTransactionDtoPagedResultDto } from '../model/combinedTransactionDtoPagedResultDto';
+import { GMSTransactionResponseDTOAPIResponse } from '../model/gMSTransactionResponseDTOAPIResponse';
 // @ts-ignore
-import { GMSTransactionResponseDTO } from '../model/gMSTransactionResponseDTO';
-// @ts-ignore
-import { MemberType } from '../model/memberType';
+import { GMSTransactionResponseDTOListAPIResponse } from '../model/gMSTransactionResponseDTOListAPIResponse';
 // @ts-ignore
 import { TransactionResponseDTO } from '../model/transactionResponseDTO';
-// @ts-ignore
-import { TransactionType } from '../model/transactionType';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -37,26 +33,21 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class GMSTransactionManagerProxy extends BaseService {
+export class GMSTransactionProxy extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * @param paymentStructureId 
      * @param transactionResponseDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppGMSTransactionManagerAddCollectionPost(paymentStructureId?: number, transactionResponseDTO?: TransactionResponseDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GMSTransactionResponseDTO>;
-    public apiServicesAppGMSTransactionManagerAddCollectionPost(paymentStructureId?: number, transactionResponseDTO?: TransactionResponseDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GMSTransactionResponseDTO>>;
-    public apiServicesAppGMSTransactionManagerAddCollectionPost(paymentStructureId?: number, transactionResponseDTO?: TransactionResponseDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GMSTransactionResponseDTO>>;
-    public apiServicesAppGMSTransactionManagerAddCollectionPost(paymentStructureId?: number, transactionResponseDTO?: TransactionResponseDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>paymentStructureId, 'paymentStructureId');
+    public apiServicesAppGMSTransactionAddGMSTransactionPost(transactionResponseDTO?: TransactionResponseDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GMSTransactionResponseDTOAPIResponse>;
+    public apiServicesAppGMSTransactionAddGMSTransactionPost(transactionResponseDTO?: TransactionResponseDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GMSTransactionResponseDTOAPIResponse>>;
+    public apiServicesAppGMSTransactionAddGMSTransactionPost(transactionResponseDTO?: TransactionResponseDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GMSTransactionResponseDTOAPIResponse>>;
+    public apiServicesAppGMSTransactionAddGMSTransactionPost(transactionResponseDTO?: TransactionResponseDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -96,13 +87,12 @@ export class GMSTransactionManagerProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/GMSTransactionManager/AddCollection`;
+        let localVarPath = `/api/services/app/GMSTransaction/AddGMSTransaction`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<GMSTransactionResponseDTO>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GMSTransactionResponseDTOAPIResponse>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: transactionResponseDTO,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -114,39 +104,27 @@ export class GMSTransactionManagerProxy extends BaseService {
     }
 
     /**
-     * @param pageNumber 
-     * @param pageSize 
-     * @param refNo 
-     * @param fromDate 
-     * @param toDate 
+     * @param groupMemberRefNO 
+     * @param transactionDate 
      * @param paymentStructureId 
-     * @param memberType 
-     * @param transactionType 
+     * @param groupId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppGMSTransactionManagerGetCollectionTransactionsGet(pageNumber?: number, pageSize?: number, refNo?: string, fromDate?: string, toDate?: string, paymentStructureId?: number, memberType?: MemberType, transactionType?: TransactionType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<CombinedTransactionDtoPagedResultDto>;
-    public apiServicesAppGMSTransactionManagerGetCollectionTransactionsGet(pageNumber?: number, pageSize?: number, refNo?: string, fromDate?: string, toDate?: string, paymentStructureId?: number, memberType?: MemberType, transactionType?: TransactionType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CombinedTransactionDtoPagedResultDto>>;
-    public apiServicesAppGMSTransactionManagerGetCollectionTransactionsGet(pageNumber?: number, pageSize?: number, refNo?: string, fromDate?: string, toDate?: string, paymentStructureId?: number, memberType?: MemberType, transactionType?: TransactionType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CombinedTransactionDtoPagedResultDto>>;
-    public apiServicesAppGMSTransactionManagerGetCollectionTransactionsGet(pageNumber?: number, pageSize?: number, refNo?: string, fromDate?: string, toDate?: string, paymentStructureId?: number, memberType?: MemberType, transactionType?: TransactionType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppGMSTransactionGetGMSTransactionGet(groupMemberRefNO?: string, transactionDate?: string, paymentStructureId?: number, groupId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GMSTransactionResponseDTOListAPIResponse>;
+    public apiServicesAppGMSTransactionGetGMSTransactionGet(groupMemberRefNO?: string, transactionDate?: string, paymentStructureId?: number, groupId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GMSTransactionResponseDTOListAPIResponse>>;
+    public apiServicesAppGMSTransactionGetGMSTransactionGet(groupMemberRefNO?: string, transactionDate?: string, paymentStructureId?: number, groupId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GMSTransactionResponseDTOListAPIResponse>>;
+    public apiServicesAppGMSTransactionGetGMSTransactionGet(groupMemberRefNO?: string, transactionDate?: string, paymentStructureId?: number, groupId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>pageNumber, 'PageNumber');
+          <any>groupMemberRefNO, 'GroupMemberRefNO');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>pageSize, 'PageSize');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>refNo, 'RefNo');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>fromDate, 'FromDate');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>toDate, 'ToDate');
+          <any>transactionDate, 'TransactionDate');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>paymentStructureId, 'PaymentStructureId');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>memberType, 'MemberType');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>transactionType, 'TransactionType');
+          <any>groupId, 'GroupId');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -175,9 +153,9 @@ export class GMSTransactionManagerProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/GMSTransactionManager/GetCollectionTransactions`;
+        let localVarPath = `/api/services/app/GMSTransaction/GetGMSTransaction`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<CombinedTransactionDtoPagedResultDto>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GMSTransactionResponseDTOListAPIResponse>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

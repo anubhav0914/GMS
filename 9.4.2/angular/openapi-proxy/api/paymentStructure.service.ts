@@ -17,11 +17,15 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { BooleanAPIResponse } from '../model/booleanAPIResponse';
+// @ts-ignore
 import { PaymentStructureRequestDTO } from '../model/paymentStructureRequestDTO';
 // @ts-ignore
 import { PaymentStructureResponseDTOAPIResponse } from '../model/paymentStructureResponseDTOAPIResponse';
 // @ts-ignore
 import { PaymentStructureResponseDTOListAPIResponse } from '../model/paymentStructureResponseDTOListAPIResponse';
+// @ts-ignore
+import { PaymentStructureUpdateDTO } from '../model/paymentStructureUpdateDTO';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -44,10 +48,10 @@ export class PaymentStructureProxy extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppPaymentStructureCreateFeeTypePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<PaymentStructureResponseDTOAPIResponse>;
-    public apiServicesAppPaymentStructureCreateFeeTypePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaymentStructureResponseDTOAPIResponse>>;
-    public apiServicesAppPaymentStructureCreateFeeTypePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaymentStructureResponseDTOAPIResponse>>;
-    public apiServicesAppPaymentStructureCreateFeeTypePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppPaymentStructureCreatePaymentStructurePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<PaymentStructureResponseDTOAPIResponse>;
+    public apiServicesAppPaymentStructureCreatePaymentStructurePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaymentStructureResponseDTOAPIResponse>>;
+    public apiServicesAppPaymentStructureCreatePaymentStructurePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaymentStructureResponseDTOAPIResponse>>;
+    public apiServicesAppPaymentStructureCreatePaymentStructurePost(paymentStructureRequestDTO?: PaymentStructureRequestDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -87,7 +91,7 @@ export class PaymentStructureProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/PaymentStructure/CreateFeeType`;
+        let localVarPath = `/api/services/app/PaymentStructure/CreatePaymentStructure`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PaymentStructureResponseDTOAPIResponse>('post', `${basePath}${localVarPath}`,
             {
@@ -104,13 +108,18 @@ export class PaymentStructureProxy extends BaseService {
     }
 
     /**
+     * @param paymentStructureId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppPaymentStructureGetAllFeeStructureGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<PaymentStructureResponseDTOListAPIResponse>;
-    public apiServicesAppPaymentStructureGetAllFeeStructureGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaymentStructureResponseDTOListAPIResponse>>;
-    public apiServicesAppPaymentStructureGetAllFeeStructureGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaymentStructureResponseDTOListAPIResponse>>;
-    public apiServicesAppPaymentStructureGetAllFeeStructureGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppPaymentStructureDeleteDelete(paymentStructureId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<BooleanAPIResponse>;
+    public apiServicesAppPaymentStructureDeleteDelete(paymentStructureId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BooleanAPIResponse>>;
+    public apiServicesAppPaymentStructureDeleteDelete(paymentStructureId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BooleanAPIResponse>>;
+    public apiServicesAppPaymentStructureDeleteDelete(paymentStructureId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>paymentStructureId, 'paymentStructureId');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -139,11 +148,133 @@ export class PaymentStructureProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/PaymentStructure/GetAllFeeStructure`;
+        let localVarPath = `/api/services/app/PaymentStructure/Delete`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<BooleanAPIResponse>('delete', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param groupId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiServicesAppPaymentStructureGetAllPaymentStructureGet(groupId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<PaymentStructureResponseDTOListAPIResponse>;
+    public apiServicesAppPaymentStructureGetAllPaymentStructureGet(groupId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaymentStructureResponseDTOListAPIResponse>>;
+    public apiServicesAppPaymentStructureGetAllPaymentStructureGet(groupId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaymentStructureResponseDTOListAPIResponse>>;
+    public apiServicesAppPaymentStructureGetAllPaymentStructureGet(groupId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>groupId, 'groupId');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'text/plain',
+            'application/json',
+            'text/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/services/app/PaymentStructure/GetAllPaymentStructure`;
         const { basePath, withCredentials } = this.configuration;
         return this.httpClient.request<PaymentStructureResponseDTOListAPIResponse>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param paymentStructureUpdateDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiServicesAppPaymentStructureUpdatePaymentStructurePut(paymentStructureUpdateDTO?: PaymentStructureUpdateDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<PaymentStructureResponseDTOAPIResponse>;
+    public apiServicesAppPaymentStructureUpdatePaymentStructurePut(paymentStructureUpdateDTO?: PaymentStructureUpdateDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<PaymentStructureResponseDTOAPIResponse>>;
+    public apiServicesAppPaymentStructureUpdatePaymentStructurePut(paymentStructureUpdateDTO?: PaymentStructureUpdateDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<PaymentStructureResponseDTOAPIResponse>>;
+    public apiServicesAppPaymentStructureUpdatePaymentStructurePut(paymentStructureUpdateDTO?: PaymentStructureUpdateDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'text/plain',
+            'application/json',
+            'text/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/services/app/PaymentStructure/UpdatePaymentStructure`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<PaymentStructureResponseDTOAPIResponse>('put', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: paymentStructureUpdateDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

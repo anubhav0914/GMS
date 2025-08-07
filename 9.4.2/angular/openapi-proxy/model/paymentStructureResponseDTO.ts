@@ -11,9 +11,7 @@
 
 export interface PaymentStructureResponseDTO { 
     id?: number;
-    groupTypeId?: number;
     name?: string | null;
-    amount?: number;
     groupId?: number;
 }
 

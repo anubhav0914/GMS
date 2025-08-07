@@ -17,9 +17,11 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { GroupTypeRequestDTO } from '../model/groupTypeRequestDTO';
+import { GroupDetailsRequestDTO } from '../model/groupDetailsRequestDTO';
 // @ts-ignore
-import { GroupTypeResponseDTO } from '../model/groupTypeResponseDTO';
+import { GroupDetailsResponseDTOAPIResponse } from '../model/groupDetailsResponseDTOAPIResponse';
+// @ts-ignore
+import { GroupDetailsResponseDTOListAPIResponse } from '../model/groupDetailsResponseDTOListAPIResponse';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -31,21 +33,21 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class GroupTypeProxy extends BaseService {
+export class GroupDetailsProxy extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * @param groupTypeRequestDTO 
+     * @param groupDetailsRequestDTO 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppGroupTypeAddGroupTypePost(groupTypeRequestDTO?: GroupTypeRequestDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupTypeResponseDTO>;
-    public apiServicesAppGroupTypeAddGroupTypePost(groupTypeRequestDTO?: GroupTypeRequestDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupTypeResponseDTO>>;
-    public apiServicesAppGroupTypeAddGroupTypePost(groupTypeRequestDTO?: GroupTypeRequestDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupTypeResponseDTO>>;
-    public apiServicesAppGroupTypeAddGroupTypePost(groupTypeRequestDTO?: GroupTypeRequestDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppGroupDetailsCreateGroupPost(groupDetailsRequestDTO?: GroupDetailsRequestDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupDetailsResponseDTOAPIResponse>;
+    public apiServicesAppGroupDetailsCreateGroupPost(groupDetailsRequestDTO?: GroupDetailsRequestDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupDetailsResponseDTOAPIResponse>>;
+    public apiServicesAppGroupDetailsCreateGroupPost(groupDetailsRequestDTO?: GroupDetailsRequestDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupDetailsResponseDTOAPIResponse>>;
+    public apiServicesAppGroupDetailsCreateGroupPost(groupDetailsRequestDTO?: GroupDetailsRequestDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -85,12 +87,12 @@ export class GroupTypeProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/GroupType/AddGroupType`;
+        let localVarPath = `/api/services/app/GroupDetails/CreateGroup`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<GroupTypeResponseDTO>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GroupDetailsResponseDTOAPIResponse>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: groupTypeRequestDTO,
+                body: groupDetailsRequestDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -105,10 +107,10 @@ export class GroupTypeProxy extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppGroupTypeGetAllGroupTypesGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<GroupTypeResponseDTO>>;
-    public apiServicesAppGroupTypeGetAllGroupTypesGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<GroupTypeResponseDTO>>>;
-    public apiServicesAppGroupTypeGetAllGroupTypesGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<GroupTypeResponseDTO>>>;
-    public apiServicesAppGroupTypeGetAllGroupTypesGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppGroupDetailsGetAllGroupsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupDetailsResponseDTOListAPIResponse>;
+    public apiServicesAppGroupDetailsGetAllGroupsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupDetailsResponseDTOListAPIResponse>>;
+    public apiServicesAppGroupDetailsGetAllGroupsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupDetailsResponseDTOListAPIResponse>>;
+    public apiServicesAppGroupDetailsGetAllGroupsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -137,9 +139,9 @@ export class GroupTypeProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/GroupType/GetAllGroupTypes`;
+        let localVarPath = `/api/services/app/GroupDetails/GetAllGroups`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<GroupTypeResponseDTO>>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GroupDetailsResponseDTOListAPIResponse>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,

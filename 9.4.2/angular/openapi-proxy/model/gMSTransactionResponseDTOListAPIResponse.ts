@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GMSTransactionResponseDTO } from './gMSTransactionResponseDTO';
 
 
-export const TransactionType = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2
-} as const;
-export type TransactionType = typeof TransactionType[keyof typeof TransactionType];
+export interface GMSTransactionResponseDTOListAPIResponse { 
+    result?: Array<GMSTransactionResponseDTO> | null;
+    message?: string | null;
+}
 

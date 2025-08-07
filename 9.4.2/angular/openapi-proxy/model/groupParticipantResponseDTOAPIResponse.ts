@@ -7,11 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CombinedTransactionDto } from './combinedTransactionDto';
+import { GroupParticipantResponseDTO } from './groupParticipantResponseDTO';
 
 
-export interface CombinedTransactionDtoPagedResultDto { 
-    items?: Array<CombinedTransactionDto> | null;
-    totalCount?: number;
+export interface GroupParticipantResponseDTOAPIResponse { 
+    result?: GroupParticipantResponseDTO;
+    message?: string | null;
 }
 
