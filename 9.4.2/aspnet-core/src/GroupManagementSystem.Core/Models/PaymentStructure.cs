@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 
 namespace GroupManagementSystem.Models;
 
-public class PaymentStructure : Entity<long>
+public class PaymentStructure : FullAuditedEntity<long>, IMustHaveTenant
 {
-    public long GroupTypeId { get; set; }
     public string Name { get; set; }
-    public decimal Amount { get; set; }
     public long GroupId { get; set; }
+    public int TenantId { get; set; }
+    public GroupDetails Group { get; set; }
+    public ICollection<GMSTransaction> GMSTransactions { get; set; }
+    public ICollection<Transaction> Transactions { get; set; }
 
-    [ForeignKey(nameof(GroupTypeId))]
-    public virtual GroupType GroupType { get; set; }
-
-    public virtual ICollection<GMSTransaction> GMSTransactions { get; set; }
 }
+
 

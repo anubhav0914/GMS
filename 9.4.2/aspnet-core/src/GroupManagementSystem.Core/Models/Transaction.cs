@@ -1,39 +1,32 @@
 using System;
 using System.Collections.Generic;
 using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 
 namespace GroupManagementSystem.Models;
 
-public class Transaction : Entity<long>
+public class Transaction : FullAuditedEntity<long> ,IMustHaveTenant
 {
-    public string RefNo { get; set; }
+    public string GroupMemberRefNO { get; set; }
+    public string TargetAccountId { get; set; }
+    public DateTime TransactionDate { get; set; }
     public decimal Amount { get; set; }
-    public TransactionMode Mode { get; set; }
+    public string Status { get; set; }
+    public string Type { get; set; }
 
-    public TransactionType TransactionType { get; set; }
-    public TransactionStatus Status { get; set; }
-        public DateTime Date { get; set; }
+    public string Mode { get; set; }
+    public string ReceiptNumber { get; set; }
+    public string TransactionReferenceId { get; set; }
+    public int TenantId { get; set; }
 
+    /// <summary>
+    /// the Payment structure is here only for GMS Trasiction 
+    /// there is no need of the PaymentStructureId in the Transaction table 
+    /// it just taken as an input from the tailler
+    /// </summary>
+    /// 
+    public long PaymentStructureId { get; set; }
 
-    public long TenantId { get; set; }
-    public long GroupId { get; set; }
+    public PaymentStructure PaymentStructure { get; set; }
 
-    public virtual ICollection<GMSTransaction> GMSTransactions { get; set; }
-}
-
-public enum TransactionMode
-{
-    Cash, Online, BankTransfer
-}
-
-public enum TransactionType
-{
-    Deposit,
-    Disbursement,
-    Revert
-}
-
-public enum TransactionStatus
-{
-    Initiated , Pending , Success
 }

@@ -1591,42 +1591,131 @@ namespace GroupManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("GroupParticipantId")
+                    b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Mode")
-                        .HasColumnType("int");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GroupMemberRefNO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("PaymentStructureId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("RefNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<long>("TransId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("TransactionId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupParticipantId");
-
                     b.HasIndex("PaymentStructureId");
 
-                    b.HasIndex("TransId");
+                    b.HasIndex("TransactionId");
 
-                    b.ToTable("GMSTransactions", (string)null);
+                    b.ToTable("GMSTransactions");
+                });
+
+            modelBuilder.Entity("GroupManagementSystem.Models.GroupDetails", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ChairmanMobileNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChairmanName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Frequency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GMSGroupType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("GroupDistrict")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupRegion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupWard")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("MemberId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("OfficeNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PolicyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupDetails");
                 });
 
             modelBuilder.Entity("GroupManagementSystem.Models.GroupParticipant", b =>
@@ -1637,10 +1726,34 @@ namespace GroupManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Emial")
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("GroupTypeId")
+                    b.Property<long>("GroupId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("GroupMemberRefNO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("MemberType")
@@ -1649,39 +1762,17 @@ namespace GroupManagementSystem.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RefNo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("TenantId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupTypeId");
+                    b.HasIndex("GroupId");
 
-                    b.ToTable("GroupParticipants", (string)null);
-                });
-
-            modelBuilder.Entity("GroupManagementSystem.Models.GroupType", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GroupTypes", (string)null);
+                    b.ToTable("GroupParticipants");
                 });
 
             modelBuilder.Entity("GroupManagementSystem.Models.PaymentStructure", b =>
@@ -1692,23 +1783,41 @@ namespace GroupManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("GroupTypeId")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupTypeId");
+                    b.HasIndex("GroupId");
 
-                    b.ToTable("PaymentStructure", (string)null);
+                    b.ToTable("PaymentStructures");
                 });
 
             modelBuilder.Entity("GroupManagementSystem.Models.Transaction", b =>
@@ -1722,30 +1831,62 @@ namespace GroupManagementSystem.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("GroupId")
+                    b.Property<long?>("CreatorUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Mode")
-                        .HasColumnType("int");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("RefNo")
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GroupMemberRefNO")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<long>("TenantId")
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("TransactionType")
+                    b.Property<string>("Mode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("PaymentStructureId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ReceiptNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TargetAccountId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TransactionReferenceId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Transactions", (string)null);
+                    b.HasIndex("PaymentStructureId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("GroupManagementSystem.MultiTenancy.Tenant", b =>
@@ -2032,23 +2173,15 @@ namespace GroupManagementSystem.Migrations
 
             modelBuilder.Entity("GroupManagementSystem.Models.GMSTransaction", b =>
                 {
-                    b.HasOne("GroupManagementSystem.Models.GroupParticipant", "GroupParticipant")
-                        .WithMany()
-                        .HasForeignKey("GroupParticipantId");
-
                     b.HasOne("GroupManagementSystem.Models.PaymentStructure", "PaymentStructure")
                         .WithMany("GMSTransactions")
                         .HasForeignKey("PaymentStructureId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GroupManagementSystem.Models.Transaction", "Transaction")
-                        .WithMany("GMSTransactions")
-                        .HasForeignKey("TransId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("GroupParticipant");
+                    b.HasOne("GroupManagementSystem.Models.Transaction", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId");
 
                     b.Navigation("PaymentStructure");
 
@@ -2057,24 +2190,35 @@ namespace GroupManagementSystem.Migrations
 
             modelBuilder.Entity("GroupManagementSystem.Models.GroupParticipant", b =>
                 {
-                    b.HasOne("GroupManagementSystem.Models.GroupType", "GroupType")
-                        .WithMany("GroupParticipants")
-                        .HasForeignKey("GroupTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("GroupManagementSystem.Models.GroupDetails", "Group")
+                        .WithMany("Participants")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("GroupType");
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("GroupManagementSystem.Models.PaymentStructure", b =>
                 {
-                    b.HasOne("GroupManagementSystem.Models.GroupType", "GroupType")
+                    b.HasOne("GroupManagementSystem.Models.GroupDetails", "Group")
                         .WithMany("PaymentStructures")
-                        .HasForeignKey("GroupTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("GroupType");
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("GroupManagementSystem.Models.Transaction", b =>
+                {
+                    b.HasOne("GroupManagementSystem.Models.PaymentStructure", "PaymentStructure")
+                        .WithMany("Transactions")
+                        .HasForeignKey("PaymentStructureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PaymentStructure");
                 });
 
             modelBuilder.Entity("GroupManagementSystem.MultiTenancy.Tenant", b =>
@@ -2175,9 +2319,9 @@ namespace GroupManagementSystem.Migrations
                     b.Navigation("Tokens");
                 });
 
-            modelBuilder.Entity("GroupManagementSystem.Models.GroupType", b =>
+            modelBuilder.Entity("GroupManagementSystem.Models.GroupDetails", b =>
                 {
-                    b.Navigation("GroupParticipants");
+                    b.Navigation("Participants");
 
                     b.Navigation("PaymentStructures");
                 });
@@ -2185,11 +2329,8 @@ namespace GroupManagementSystem.Migrations
             modelBuilder.Entity("GroupManagementSystem.Models.PaymentStructure", b =>
                 {
                     b.Navigation("GMSTransactions");
-                });
 
-            modelBuilder.Entity("GroupManagementSystem.Models.Transaction", b =>
-                {
-                    b.Navigation("GMSTransactions");
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }
