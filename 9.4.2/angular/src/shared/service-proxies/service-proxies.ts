@@ -206,6 +206,865 @@ export class ConfigurationServiceProxy {
 }
 
 @Injectable()
+export class GMSTransactionServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    addGMSTransaction(body: TransactionResponseDTO | undefined): Observable<GMSTransactionResponseDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GMSTransaction/AddGMSTransaction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddGMSTransaction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddGMSTransaction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GMSTransactionResponseDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GMSTransactionResponseDTOAPIResponse>;
+        }));
+    }
+
+    protected processAddGMSTransaction(response: HttpResponseBase): Observable<GMSTransactionResponseDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GMSTransactionResponseDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param groupMemberRefNO (optional) 
+     * @param targetAccountId (optional) 
+     * @param transactionDate (optional) 
+     * @param amount (optional) 
+     * @param transId (optional) 
+     * @param status (optional) 
+     * @param type (optional) 
+     * @param mode (optional) 
+     * @param receiptNumber (optional) 
+     * @param transactionReferenceId (optional) 
+     * @param paymentStructureId (optional) 
+     * @return OK
+     */
+    getGMSTransaction(id: string | undefined, groupMemberRefNO: string | undefined, targetAccountId: string | undefined, transactionDate: moment.Moment | undefined, amount: number | undefined, transId: string | undefined, status: string | undefined, type: string | undefined, mode: string | undefined, receiptNumber: string | undefined, transactionReferenceId: string | undefined, paymentStructureId: number | undefined): Observable<GMSTransactionResponseDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GMSTransaction/GetGMSTransaction?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        if (groupMemberRefNO === null)
+            throw new Error("The parameter 'groupMemberRefNO' cannot be null.");
+        else if (groupMemberRefNO !== undefined)
+            url_ += "GroupMemberRefNO=" + encodeURIComponent("" + groupMemberRefNO) + "&";
+        if (targetAccountId === null)
+            throw new Error("The parameter 'targetAccountId' cannot be null.");
+        else if (targetAccountId !== undefined)
+            url_ += "TargetAccountId=" + encodeURIComponent("" + targetAccountId) + "&";
+        if (transactionDate === null)
+            throw new Error("The parameter 'transactionDate' cannot be null.");
+        else if (transactionDate !== undefined)
+            url_ += "TransactionDate=" + encodeURIComponent(transactionDate ? "" + transactionDate.toISOString() : "") + "&";
+        if (amount === null)
+            throw new Error("The parameter 'amount' cannot be null.");
+        else if (amount !== undefined)
+            url_ += "Amount=" + encodeURIComponent("" + amount) + "&";
+        if (transId === null)
+            throw new Error("The parameter 'transId' cannot be null.");
+        else if (transId !== undefined)
+            url_ += "TransId=" + encodeURIComponent("" + transId) + "&";
+        if (status === null)
+            throw new Error("The parameter 'status' cannot be null.");
+        else if (status !== undefined)
+            url_ += "Status=" + encodeURIComponent("" + status) + "&";
+        if (type === null)
+            throw new Error("The parameter 'type' cannot be null.");
+        else if (type !== undefined)
+            url_ += "Type=" + encodeURIComponent("" + type) + "&";
+        if (mode === null)
+            throw new Error("The parameter 'mode' cannot be null.");
+        else if (mode !== undefined)
+            url_ += "Mode=" + encodeURIComponent("" + mode) + "&";
+        if (receiptNumber === null)
+            throw new Error("The parameter 'receiptNumber' cannot be null.");
+        else if (receiptNumber !== undefined)
+            url_ += "ReceiptNumber=" + encodeURIComponent("" + receiptNumber) + "&";
+        if (transactionReferenceId === null)
+            throw new Error("The parameter 'transactionReferenceId' cannot be null.");
+        else if (transactionReferenceId !== undefined)
+            url_ += "TransactionReferenceId=" + encodeURIComponent("" + transactionReferenceId) + "&";
+        if (paymentStructureId === null)
+            throw new Error("The parameter 'paymentStructureId' cannot be null.");
+        else if (paymentStructureId !== undefined)
+            url_ += "PaymentStructureId=" + encodeURIComponent("" + paymentStructureId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetGMSTransaction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetGMSTransaction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GMSTransactionResponseDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GMSTransactionResponseDTOAPIResponse>;
+        }));
+    }
+
+    protected processGetGMSTransaction(response: HttpResponseBase): Observable<GMSTransactionResponseDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GMSTransactionResponseDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class GroupDetailsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createGroup(body: GroupDetailsRequestDTO | undefined): Observable<GroupDetailsResponseDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GroupDetails/CreateGroup";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateGroup(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateGroup(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupDetailsResponseDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupDetailsResponseDTOAPIResponse>;
+        }));
+    }
+
+    protected processCreateGroup(response: HttpResponseBase): Observable<GroupDetailsResponseDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupDetailsResponseDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAllGroups(): Observable<GroupDetailsResponseDTOListAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GroupDetails/GetAllGroups";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllGroups(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllGroups(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupDetailsResponseDTOListAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupDetailsResponseDTOListAPIResponse>;
+        }));
+    }
+
+    protected processGetAllGroups(response: HttpResponseBase): Observable<GroupDetailsResponseDTOListAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupDetailsResponseDTOListAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class GroupParticipantServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param memberType (optional) 
+     * @param groupId (optional) 
+     * @param userName (optional) 
+     * @param email (optional) 
+     * @param phoneNumber (optional) 
+     * @return OK
+     */
+    createGroupParticipant(memberType: MemberType | undefined, groupId: number | undefined, userName: string | undefined, email: string | undefined, phoneNumber: string | undefined): Observable<GroupParticipantResponseDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GroupParticipant/CreateGroupParticipant";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (memberType === null || memberType === undefined)
+            throw new Error("The parameter 'memberType' cannot be null.");
+        else
+            content_.append("MemberType", memberType.toString());
+        if (groupId === null || groupId === undefined)
+            throw new Error("The parameter 'groupId' cannot be null.");
+        else
+            content_.append("GroupId", groupId.toString());
+        if (userName === null || userName === undefined)
+            throw new Error("The parameter 'userName' cannot be null.");
+        else
+            content_.append("UserName", userName.toString());
+        if (email === null || email === undefined)
+            throw new Error("The parameter 'email' cannot be null.");
+        else
+            content_.append("Email", email.toString());
+        if (phoneNumber === null || phoneNumber === undefined)
+            throw new Error("The parameter 'phoneNumber' cannot be null.");
+        else
+            content_.append("PhoneNumber", phoneNumber.toString());
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateGroupParticipant(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateGroupParticipant(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupParticipantResponseDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupParticipantResponseDTOAPIResponse>;
+        }));
+    }
+
+    protected processCreateGroupParticipant(response: HttpResponseBase): Observable<GroupParticipantResponseDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupParticipantResponseDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    importParticipant(body: GroupParticipantRequestDTO[] | undefined): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GroupParticipant/ImportParticipant";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processImportParticipant(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processImportParticipant(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+        }));
+    }
+
+    protected processImportParticipant(response: HttpResponseBase): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupParticipantResponseDTOListAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param memberType (optional) 
+     * @param groupMemberRefNO (optional) 
+     * @param groupId (optional) 
+     * @return OK
+     */
+    getParticipants(memberType: MemberType | undefined, groupMemberRefNO: string | undefined, groupId: number | undefined): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GroupParticipant/GetParticipants?";
+        if (memberType === null)
+            throw new Error("The parameter 'memberType' cannot be null.");
+        else if (memberType !== undefined)
+            url_ += "MemberType=" + encodeURIComponent("" + memberType) + "&";
+        if (groupMemberRefNO === null)
+            throw new Error("The parameter 'groupMemberRefNO' cannot be null.");
+        else if (groupMemberRefNO !== undefined)
+            url_ += "GroupMemberRefNO=" + encodeURIComponent("" + groupMemberRefNO) + "&";
+        if (groupId === null)
+            throw new Error("The parameter 'groupId' cannot be null.");
+        else if (groupId !== undefined)
+            url_ += "GroupId=" + encodeURIComponent("" + groupId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetParticipants(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetParticipants(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+        }));
+    }
+
+    protected processGetParticipants(response: HttpResponseBase): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupParticipantResponseDTOListAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    updateParticipants(body: GroupParticipantsUpdateDTO | undefined): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GroupParticipant/UpdateParticipants";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateParticipants(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateParticipants(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+        }));
+    }
+
+    protected processUpdateParticipants(response: HttpResponseBase): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupParticipantResponseDTOListAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param membId (optional) 
+     * @return OK
+     */
+    deleteParticipants(membId: number | undefined): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/GroupParticipant/DeleteParticipants?";
+        if (membId === null)
+            throw new Error("The parameter 'membId' cannot be null.");
+        else if (membId !== undefined)
+            url_ += "membId=" + encodeURIComponent("" + membId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteParticipants(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteParticipants(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GroupParticipantResponseDTOListAPIResponse>;
+        }));
+    }
+
+    protected processDeleteParticipants(response: HttpResponseBase): Observable<GroupParticipantResponseDTOListAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GroupParticipantResponseDTOListAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
+export class PaymentStructureServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createPaymentStructure(body: PaymentStructureRequestDTO | undefined): Observable<PaymentStructureResponseDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/PaymentStructure/CreatePaymentStructure";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreatePaymentStructure(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreatePaymentStructure(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaymentStructureResponseDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaymentStructureResponseDTOAPIResponse>;
+        }));
+    }
+
+    protected processCreatePaymentStructure(response: HttpResponseBase): Observable<PaymentStructureResponseDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaymentStructureResponseDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param groupId (optional) 
+     * @return OK
+     */
+    getAllPaymentStructure(groupId: number | undefined): Observable<PaymentStructureResponseDTOListAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/PaymentStructure/GetAllPaymentStructure?";
+        if (groupId === null)
+            throw new Error("The parameter 'groupId' cannot be null.");
+        else if (groupId !== undefined)
+            url_ += "groupId=" + encodeURIComponent("" + groupId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllPaymentStructure(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllPaymentStructure(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaymentStructureResponseDTOListAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaymentStructureResponseDTOListAPIResponse>;
+        }));
+    }
+
+    protected processGetAllPaymentStructure(response: HttpResponseBase): Observable<PaymentStructureResponseDTOListAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaymentStructureResponseDTOListAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    updatePaymentStructure(body: PaymentStructureUpdateDTO | undefined): Observable<PaymentStructureResponseDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/PaymentStructure/UpdatePaymentStructure";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdatePaymentStructure(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdatePaymentStructure(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PaymentStructureResponseDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PaymentStructureResponseDTOAPIResponse>;
+        }));
+    }
+
+    protected processUpdatePaymentStructure(response: HttpResponseBase): Observable<PaymentStructureResponseDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaymentStructureResponseDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @param paymentStructureId (optional) 
+     * @return OK
+     */
+    delete(paymentStructureId: number | undefined): Observable<BooleanAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/PaymentStructure/Delete?";
+        if (paymentStructureId === null)
+            throw new Error("The parameter 'paymentStructureId' cannot be null.");
+        else if (paymentStructureId !== undefined)
+            url_ += "paymentStructureId=" + encodeURIComponent("" + paymentStructureId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<BooleanAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<BooleanAPIResponse>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<BooleanAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BooleanAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class RoleServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1101,6 +1960,74 @@ export class TokenAuthServiceProxy {
 }
 
 @Injectable()
+export class TransicationsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    createTransaction(body: TransactionRequestDTO | undefined): Observable<TransactionResponseDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/Transications/CreateTransaction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateTransaction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateTransaction(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<TransactionResponseDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<TransactionResponseDTOAPIResponse>;
+        }));
+    }
+
+    protected processCreateTransaction(response: HttpResponseBase): Observable<TransactionResponseDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = TransactionResponseDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class UserServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1893,6 +2820,53 @@ export interface IAuthenticateResultModel {
     userId: number;
 }
 
+export class BooleanAPIResponse implements IBooleanAPIResponse {
+    result: boolean;
+    message: string | undefined;
+
+    constructor(data?: IBooleanAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): BooleanAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BooleanAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result;
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): BooleanAPIResponse {
+        const json = this.toJSON();
+        let result = new BooleanAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBooleanAPIResponse {
+    result: boolean;
+    message: string | undefined;
+}
+
 export class ChangePasswordDto implements IChangePasswordDto {
     currentPassword: string;
     newPassword: string;
@@ -2278,6 +3252,112 @@ export interface IFlatPermissionDto {
     description: string | undefined;
 }
 
+export class GMSTransactionResponseDTO implements IGMSTransactionResponseDTO {
+    id: number;
+    groupMemberRefNO: string | undefined;
+    transactionDate: moment.Moment;
+    transId: number;
+    paymentStructureId: number;
+
+    constructor(data?: IGMSTransactionResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.groupMemberRefNO = _data["groupMemberRefNO"];
+            this.transactionDate = _data["transactionDate"] ? moment(_data["transactionDate"].toString()) : <any>undefined;
+            this.transId = _data["transId"];
+            this.paymentStructureId = _data["paymentStructureId"];
+        }
+    }
+
+    static fromJS(data: any): GMSTransactionResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GMSTransactionResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["groupMemberRefNO"] = this.groupMemberRefNO;
+        data["transactionDate"] = this.transactionDate ? this.transactionDate.toISOString() : <any>undefined;
+        data["transId"] = this.transId;
+        data["paymentStructureId"] = this.paymentStructureId;
+        return data;
+    }
+
+    clone(): GMSTransactionResponseDTO {
+        const json = this.toJSON();
+        let result = new GMSTransactionResponseDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGMSTransactionResponseDTO {
+    id: number;
+    groupMemberRefNO: string | undefined;
+    transactionDate: moment.Moment;
+    transId: number;
+    paymentStructureId: number;
+}
+
+export class GMSTransactionResponseDTOAPIResponse implements IGMSTransactionResponseDTOAPIResponse {
+    result: GMSTransactionResponseDTO;
+    message: string | undefined;
+
+    constructor(data?: IGMSTransactionResponseDTOAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"] ? GMSTransactionResponseDTO.fromJS(_data["result"]) : <any>undefined;
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GMSTransactionResponseDTOAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GMSTransactionResponseDTOAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): GMSTransactionResponseDTOAPIResponse {
+        const json = this.toJSON();
+        let result = new GMSTransactionResponseDTOAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGMSTransactionResponseDTOAPIResponse {
+    result: GMSTransactionResponseDTO;
+    message: string | undefined;
+}
+
 export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {
     application: ApplicationInfoDto;
     user: UserLoginInfoDto;
@@ -2394,6 +3474,581 @@ export interface IGetRoleForEditOutput {
     role: RoleEditDto;
     permissions: FlatPermissionDto[] | undefined;
     grantedPermissionNames: string[] | undefined;
+}
+
+export class GroupDetailsRequestDTO implements IGroupDetailsRequestDTO {
+    groupName: string | undefined;
+    chairmanName: string | undefined;
+    chairmanMobileNumber: string | undefined;
+    groupRegion: string | undefined;
+    groupDistrict: string | undefined;
+    groupWard: string | undefined;
+    officeNumber: string | undefined;
+    groupNumber: string | undefined;
+    memberId: number;
+    typeId: number;
+    policyId: number;
+    groupTypeId: number;
+    frequency: string | undefined;
+
+    constructor(data?: IGroupDetailsRequestDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.groupName = _data["groupName"];
+            this.chairmanName = _data["chairmanName"];
+            this.chairmanMobileNumber = _data["chairmanMobileNumber"];
+            this.groupRegion = _data["groupRegion"];
+            this.groupDistrict = _data["groupDistrict"];
+            this.groupWard = _data["groupWard"];
+            this.officeNumber = _data["officeNumber"];
+            this.groupNumber = _data["groupNumber"];
+            this.memberId = _data["memberId"];
+            this.typeId = _data["typeId"];
+            this.policyId = _data["policyId"];
+            this.groupTypeId = _data["groupTypeId"];
+            this.frequency = _data["frequency"];
+        }
+    }
+
+    static fromJS(data: any): GroupDetailsRequestDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupDetailsRequestDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["groupName"] = this.groupName;
+        data["chairmanName"] = this.chairmanName;
+        data["chairmanMobileNumber"] = this.chairmanMobileNumber;
+        data["groupRegion"] = this.groupRegion;
+        data["groupDistrict"] = this.groupDistrict;
+        data["groupWard"] = this.groupWard;
+        data["officeNumber"] = this.officeNumber;
+        data["groupNumber"] = this.groupNumber;
+        data["memberId"] = this.memberId;
+        data["typeId"] = this.typeId;
+        data["policyId"] = this.policyId;
+        data["groupTypeId"] = this.groupTypeId;
+        data["frequency"] = this.frequency;
+        return data;
+    }
+
+    clone(): GroupDetailsRequestDTO {
+        const json = this.toJSON();
+        let result = new GroupDetailsRequestDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupDetailsRequestDTO {
+    groupName: string | undefined;
+    chairmanName: string | undefined;
+    chairmanMobileNumber: string | undefined;
+    groupRegion: string | undefined;
+    groupDistrict: string | undefined;
+    groupWard: string | undefined;
+    officeNumber: string | undefined;
+    groupNumber: string | undefined;
+    memberId: number;
+    typeId: number;
+    policyId: number;
+    groupTypeId: number;
+    frequency: string | undefined;
+}
+
+export class GroupDetailsResponseDTO implements IGroupDetailsResponseDTO {
+    id: number;
+    groupName: string | undefined;
+    userId: number;
+    chairmanName: string | undefined;
+    chairmanMobileNumber: string | undefined;
+    groupRegion: string | undefined;
+    groupDistrict: string | undefined;
+    groupWard: string | undefined;
+    officeNumber: string | undefined;
+    groupNumber: string | undefined;
+    memberId: number;
+    typeId: number;
+    policyId: number;
+    groupTypeId: number;
+    frequency: string | undefined;
+
+    constructor(data?: IGroupDetailsResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.groupName = _data["groupName"];
+            this.userId = _data["userId"];
+            this.chairmanName = _data["chairmanName"];
+            this.chairmanMobileNumber = _data["chairmanMobileNumber"];
+            this.groupRegion = _data["groupRegion"];
+            this.groupDistrict = _data["groupDistrict"];
+            this.groupWard = _data["groupWard"];
+            this.officeNumber = _data["officeNumber"];
+            this.groupNumber = _data["groupNumber"];
+            this.memberId = _data["memberId"];
+            this.typeId = _data["typeId"];
+            this.policyId = _data["policyId"];
+            this.groupTypeId = _data["groupTypeId"];
+            this.frequency = _data["frequency"];
+        }
+    }
+
+    static fromJS(data: any): GroupDetailsResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupDetailsResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["groupName"] = this.groupName;
+        data["userId"] = this.userId;
+        data["chairmanName"] = this.chairmanName;
+        data["chairmanMobileNumber"] = this.chairmanMobileNumber;
+        data["groupRegion"] = this.groupRegion;
+        data["groupDistrict"] = this.groupDistrict;
+        data["groupWard"] = this.groupWard;
+        data["officeNumber"] = this.officeNumber;
+        data["groupNumber"] = this.groupNumber;
+        data["memberId"] = this.memberId;
+        data["typeId"] = this.typeId;
+        data["policyId"] = this.policyId;
+        data["groupTypeId"] = this.groupTypeId;
+        data["frequency"] = this.frequency;
+        return data;
+    }
+
+    clone(): GroupDetailsResponseDTO {
+        const json = this.toJSON();
+        let result = new GroupDetailsResponseDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupDetailsResponseDTO {
+    id: number;
+    groupName: string | undefined;
+    userId: number;
+    chairmanName: string | undefined;
+    chairmanMobileNumber: string | undefined;
+    groupRegion: string | undefined;
+    groupDistrict: string | undefined;
+    groupWard: string | undefined;
+    officeNumber: string | undefined;
+    groupNumber: string | undefined;
+    memberId: number;
+    typeId: number;
+    policyId: number;
+    groupTypeId: number;
+    frequency: string | undefined;
+}
+
+export class GroupDetailsResponseDTOAPIResponse implements IGroupDetailsResponseDTOAPIResponse {
+    result: GroupDetailsResponseDTO;
+    message: string | undefined;
+
+    constructor(data?: IGroupDetailsResponseDTOAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"] ? GroupDetailsResponseDTO.fromJS(_data["result"]) : <any>undefined;
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GroupDetailsResponseDTOAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupDetailsResponseDTOAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): GroupDetailsResponseDTOAPIResponse {
+        const json = this.toJSON();
+        let result = new GroupDetailsResponseDTOAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupDetailsResponseDTOAPIResponse {
+    result: GroupDetailsResponseDTO;
+    message: string | undefined;
+}
+
+export class GroupDetailsResponseDTOListAPIResponse implements IGroupDetailsResponseDTOListAPIResponse {
+    result: GroupDetailsResponseDTO[] | undefined;
+    message: string | undefined;
+
+    constructor(data?: IGroupDetailsResponseDTOListAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["result"])) {
+                this.result = [] as any;
+                for (let item of _data["result"])
+                    this.result.push(GroupDetailsResponseDTO.fromJS(item));
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GroupDetailsResponseDTOListAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupDetailsResponseDTOListAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.result)) {
+            data["result"] = [];
+            for (let item of this.result)
+                data["result"].push(item.toJSON());
+        }
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): GroupDetailsResponseDTOListAPIResponse {
+        const json = this.toJSON();
+        let result = new GroupDetailsResponseDTOListAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupDetailsResponseDTOListAPIResponse {
+    result: GroupDetailsResponseDTO[] | undefined;
+    message: string | undefined;
+}
+
+export class GroupParticipantRequestDTO implements IGroupParticipantRequestDTO {
+    memberType: MemberType;
+    groupId: number;
+    userName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+
+    constructor(data?: IGroupParticipantRequestDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.memberType = _data["memberType"];
+            this.groupId = _data["groupId"];
+            this.userName = _data["userName"];
+            this.email = _data["email"];
+            this.phoneNumber = _data["phoneNumber"];
+        }
+    }
+
+    static fromJS(data: any): GroupParticipantRequestDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupParticipantRequestDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["memberType"] = this.memberType;
+        data["groupId"] = this.groupId;
+        data["userName"] = this.userName;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        return data;
+    }
+
+    clone(): GroupParticipantRequestDTO {
+        const json = this.toJSON();
+        let result = new GroupParticipantRequestDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupParticipantRequestDTO {
+    memberType: MemberType;
+    groupId: number;
+    userName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+}
+
+export class GroupParticipantResponseDTO implements IGroupParticipantResponseDTO {
+    id: number;
+    memberType: MemberType;
+    groupMemberRefNO: string | undefined;
+    groupId: number;
+    userName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+
+    constructor(data?: IGroupParticipantResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.memberType = _data["memberType"];
+            this.groupMemberRefNO = _data["groupMemberRefNO"];
+            this.groupId = _data["groupId"];
+            this.userName = _data["userName"];
+            this.email = _data["email"];
+            this.phoneNumber = _data["phoneNumber"];
+        }
+    }
+
+    static fromJS(data: any): GroupParticipantResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupParticipantResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["memberType"] = this.memberType;
+        data["groupMemberRefNO"] = this.groupMemberRefNO;
+        data["groupId"] = this.groupId;
+        data["userName"] = this.userName;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        return data;
+    }
+
+    clone(): GroupParticipantResponseDTO {
+        const json = this.toJSON();
+        let result = new GroupParticipantResponseDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupParticipantResponseDTO {
+    id: number;
+    memberType: MemberType;
+    groupMemberRefNO: string | undefined;
+    groupId: number;
+    userName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+}
+
+export class GroupParticipantResponseDTOAPIResponse implements IGroupParticipantResponseDTOAPIResponse {
+    result: GroupParticipantResponseDTO;
+    message: string | undefined;
+
+    constructor(data?: IGroupParticipantResponseDTOAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"] ? GroupParticipantResponseDTO.fromJS(_data["result"]) : <any>undefined;
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GroupParticipantResponseDTOAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupParticipantResponseDTOAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): GroupParticipantResponseDTOAPIResponse {
+        const json = this.toJSON();
+        let result = new GroupParticipantResponseDTOAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupParticipantResponseDTOAPIResponse {
+    result: GroupParticipantResponseDTO;
+    message: string | undefined;
+}
+
+export class GroupParticipantResponseDTOListAPIResponse implements IGroupParticipantResponseDTOListAPIResponse {
+    result: GroupParticipantResponseDTO[] | undefined;
+    message: string | undefined;
+
+    constructor(data?: IGroupParticipantResponseDTOListAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["result"])) {
+                this.result = [] as any;
+                for (let item of _data["result"])
+                    this.result.push(GroupParticipantResponseDTO.fromJS(item));
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): GroupParticipantResponseDTOListAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupParticipantResponseDTOListAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.result)) {
+            data["result"] = [];
+            for (let item of this.result)
+                data["result"].push(item.toJSON());
+        }
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): GroupParticipantResponseDTOListAPIResponse {
+        const json = this.toJSON();
+        let result = new GroupParticipantResponseDTOListAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupParticipantResponseDTOListAPIResponse {
+    result: GroupParticipantResponseDTO[] | undefined;
+    message: string | undefined;
+}
+
+export class GroupParticipantsUpdateDTO implements IGroupParticipantsUpdateDTO {
+    id: number;
+    userName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+
+    constructor(data?: IGroupParticipantsUpdateDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userName = _data["userName"];
+            this.email = _data["email"];
+            this.phoneNumber = _data["phoneNumber"];
+        }
+    }
+
+    static fromJS(data: any): GroupParticipantsUpdateDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new GroupParticipantsUpdateDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userName"] = this.userName;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        return data;
+    }
+
+    clone(): GroupParticipantsUpdateDTO {
+        const json = this.toJSON();
+        let result = new GroupParticipantsUpdateDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGroupParticipantsUpdateDTO {
+    id: number;
+    userName: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {
@@ -2527,6 +4182,264 @@ export class IsTenantAvailableOutput implements IIsTenantAvailableOutput {
 export interface IIsTenantAvailableOutput {
     state: TenantAvailabilityState;
     tenantId: number | undefined;
+}
+
+export enum MemberType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+}
+
+export class PaymentStructureRequestDTO implements IPaymentStructureRequestDTO {
+    name: string | undefined;
+    groupId: number;
+
+    constructor(data?: IPaymentStructureRequestDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.groupId = _data["groupId"];
+        }
+    }
+
+    static fromJS(data: any): PaymentStructureRequestDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStructureRequestDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["groupId"] = this.groupId;
+        return data;
+    }
+
+    clone(): PaymentStructureRequestDTO {
+        const json = this.toJSON();
+        let result = new PaymentStructureRequestDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentStructureRequestDTO {
+    name: string | undefined;
+    groupId: number;
+}
+
+export class PaymentStructureResponseDTO implements IPaymentStructureResponseDTO {
+    id: number;
+    name: string | undefined;
+    groupId: number;
+
+    constructor(data?: IPaymentStructureResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.groupId = _data["groupId"];
+        }
+    }
+
+    static fromJS(data: any): PaymentStructureResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStructureResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["groupId"] = this.groupId;
+        return data;
+    }
+
+    clone(): PaymentStructureResponseDTO {
+        const json = this.toJSON();
+        let result = new PaymentStructureResponseDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentStructureResponseDTO {
+    id: number;
+    name: string | undefined;
+    groupId: number;
+}
+
+export class PaymentStructureResponseDTOAPIResponse implements IPaymentStructureResponseDTOAPIResponse {
+    result: PaymentStructureResponseDTO;
+    message: string | undefined;
+
+    constructor(data?: IPaymentStructureResponseDTOAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"] ? PaymentStructureResponseDTO.fromJS(_data["result"]) : <any>undefined;
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): PaymentStructureResponseDTOAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStructureResponseDTOAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): PaymentStructureResponseDTOAPIResponse {
+        const json = this.toJSON();
+        let result = new PaymentStructureResponseDTOAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentStructureResponseDTOAPIResponse {
+    result: PaymentStructureResponseDTO;
+    message: string | undefined;
+}
+
+export class PaymentStructureResponseDTOListAPIResponse implements IPaymentStructureResponseDTOListAPIResponse {
+    result: PaymentStructureResponseDTO[] | undefined;
+    message: string | undefined;
+
+    constructor(data?: IPaymentStructureResponseDTOListAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["result"])) {
+                this.result = [] as any;
+                for (let item of _data["result"])
+                    this.result.push(PaymentStructureResponseDTO.fromJS(item));
+            }
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): PaymentStructureResponseDTOListAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStructureResponseDTOListAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.result)) {
+            data["result"] = [];
+            for (let item of this.result)
+                data["result"].push(item.toJSON());
+        }
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): PaymentStructureResponseDTOListAPIResponse {
+        const json = this.toJSON();
+        let result = new PaymentStructureResponseDTOListAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentStructureResponseDTOListAPIResponse {
+    result: PaymentStructureResponseDTO[] | undefined;
+    message: string | undefined;
+}
+
+export class PaymentStructureUpdateDTO implements IPaymentStructureUpdateDTO {
+    name: string | undefined;
+    groupId: number;
+    id: number;
+
+    constructor(data?: IPaymentStructureUpdateDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.groupId = _data["groupId"];
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): PaymentStructureUpdateDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStructureUpdateDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["groupId"] = this.groupId;
+        data["id"] = this.id;
+        return data;
+    }
+
+    clone(): PaymentStructureUpdateDTO {
+        const json = this.toJSON();
+        let result = new PaymentStructureUpdateDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentStructureUpdateDTO {
+    name: string | undefined;
+    groupId: number;
+    id: number;
 }
 
 export class PermissionDto implements IPermissionDto {
@@ -3307,6 +5220,223 @@ export interface ITenantLoginInfoDto {
     id: number;
     tenancyName: string | undefined;
     name: string | undefined;
+}
+
+export class TransactionRequestDTO implements ITransactionRequestDTO {
+    groupMemberRefNO: string | undefined;
+    targetAccountId: string | undefined;
+    transactionDate: moment.Moment;
+    amount: number;
+    transId: string | undefined;
+    status: string | undefined;
+    type: string | undefined;
+    mode: string | undefined;
+    receiptNumber: string | undefined;
+    transactionReferenceId: string | undefined;
+    paymentStructureId: number;
+
+    constructor(data?: ITransactionRequestDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.groupMemberRefNO = _data["groupMemberRefNO"];
+            this.targetAccountId = _data["targetAccountId"];
+            this.transactionDate = _data["transactionDate"] ? moment(_data["transactionDate"].toString()) : <any>undefined;
+            this.amount = _data["amount"];
+            this.transId = _data["transId"];
+            this.status = _data["status"];
+            this.type = _data["type"];
+            this.mode = _data["mode"];
+            this.receiptNumber = _data["receiptNumber"];
+            this.transactionReferenceId = _data["transactionReferenceId"];
+            this.paymentStructureId = _data["paymentStructureId"];
+        }
+    }
+
+    static fromJS(data: any): TransactionRequestDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new TransactionRequestDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["groupMemberRefNO"] = this.groupMemberRefNO;
+        data["targetAccountId"] = this.targetAccountId;
+        data["transactionDate"] = this.transactionDate ? this.transactionDate.toISOString() : <any>undefined;
+        data["amount"] = this.amount;
+        data["transId"] = this.transId;
+        data["status"] = this.status;
+        data["type"] = this.type;
+        data["mode"] = this.mode;
+        data["receiptNumber"] = this.receiptNumber;
+        data["transactionReferenceId"] = this.transactionReferenceId;
+        data["paymentStructureId"] = this.paymentStructureId;
+        return data;
+    }
+
+    clone(): TransactionRequestDTO {
+        const json = this.toJSON();
+        let result = new TransactionRequestDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITransactionRequestDTO {
+    groupMemberRefNO: string | undefined;
+    targetAccountId: string | undefined;
+    transactionDate: moment.Moment;
+    amount: number;
+    transId: string | undefined;
+    status: string | undefined;
+    type: string | undefined;
+    mode: string | undefined;
+    receiptNumber: string | undefined;
+    transactionReferenceId: string | undefined;
+    paymentStructureId: number;
+}
+
+export class TransactionResponseDTO implements ITransactionResponseDTO {
+    id: string | undefined;
+    groupMemberRefNO: string | undefined;
+    targetAccountId: string | undefined;
+    transactionDate: moment.Moment;
+    amount: number;
+    transId: string | undefined;
+    status: string | undefined;
+    type: string | undefined;
+    mode: string | undefined;
+    receiptNumber: string | undefined;
+    transactionReferenceId: string | undefined;
+    paymentStructureId: number;
+
+    constructor(data?: ITransactionResponseDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.groupMemberRefNO = _data["groupMemberRefNO"];
+            this.targetAccountId = _data["targetAccountId"];
+            this.transactionDate = _data["transactionDate"] ? moment(_data["transactionDate"].toString()) : <any>undefined;
+            this.amount = _data["amount"];
+            this.transId = _data["transId"];
+            this.status = _data["status"];
+            this.type = _data["type"];
+            this.mode = _data["mode"];
+            this.receiptNumber = _data["receiptNumber"];
+            this.transactionReferenceId = _data["transactionReferenceId"];
+            this.paymentStructureId = _data["paymentStructureId"];
+        }
+    }
+
+    static fromJS(data: any): TransactionResponseDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new TransactionResponseDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["groupMemberRefNO"] = this.groupMemberRefNO;
+        data["targetAccountId"] = this.targetAccountId;
+        data["transactionDate"] = this.transactionDate ? this.transactionDate.toISOString() : <any>undefined;
+        data["amount"] = this.amount;
+        data["transId"] = this.transId;
+        data["status"] = this.status;
+        data["type"] = this.type;
+        data["mode"] = this.mode;
+        data["receiptNumber"] = this.receiptNumber;
+        data["transactionReferenceId"] = this.transactionReferenceId;
+        data["paymentStructureId"] = this.paymentStructureId;
+        return data;
+    }
+
+    clone(): TransactionResponseDTO {
+        const json = this.toJSON();
+        let result = new TransactionResponseDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITransactionResponseDTO {
+    id: string | undefined;
+    groupMemberRefNO: string | undefined;
+    targetAccountId: string | undefined;
+    transactionDate: moment.Moment;
+    amount: number;
+    transId: string | undefined;
+    status: string | undefined;
+    type: string | undefined;
+    mode: string | undefined;
+    receiptNumber: string | undefined;
+    transactionReferenceId: string | undefined;
+    paymentStructureId: number;
+}
+
+export class TransactionResponseDTOAPIResponse implements ITransactionResponseDTOAPIResponse {
+    result: TransactionResponseDTO;
+    message: string | undefined;
+
+    constructor(data?: ITransactionResponseDTOAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"] ? TransactionResponseDTO.fromJS(_data["result"]) : <any>undefined;
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): TransactionResponseDTOAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new TransactionResponseDTOAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): TransactionResponseDTOAPIResponse {
+        const json = this.toJSON();
+        let result = new TransactionResponseDTOAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITransactionResponseDTOAPIResponse {
+    result: TransactionResponseDTO;
+    message: string | undefined;
 }
 
 export class UserDto implements IUserDto {
