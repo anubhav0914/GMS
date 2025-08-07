@@ -36,14 +36,25 @@ namespace GroupManagementSystem.Manager.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.Amount) || dto.GroupId <= 0)
+                var isGroupExist = await _groupDetailsRepository.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
+
+                if (isGroupExist == null)
                 {
                     return new APIResponse<PaymentStructureResponseDTO>
-                    {
-                        message = "Invalid input data.",
-                        result = null
-                    };
+                        {
+                            message = "Invalid GroupId .",
+                            result = null
+                        };   
                 }
+                    if (string.IsNullOrWhiteSpace(dto.Name) || dto.GroupId <= 0)
+                    {
+                        return new APIResponse<PaymentStructureResponseDTO>
+                        {
+                            message = "Invalid input data.",
+                            result = null
+                        };
+                    }
+                
 
                 var entity = _mapper.Map<PaymentStructure>(dto);
                 entity.TenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found.");

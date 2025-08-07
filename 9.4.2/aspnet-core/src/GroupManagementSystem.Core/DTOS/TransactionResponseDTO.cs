@@ -8,9 +8,10 @@ namespace GroupManagementSystem.DTOS;
 [AutoMapTo(typeof(Transaction))]
 
 
+
 public class TransactionResponseDTO
 {
-    public string Id { get; set; }
+    public long Id { get; set; }
     public string GroupMemberRefNO { get; set; }
     public string TargetAccountId { get; set; }
     public DateTime TransactionDate { get; set; }

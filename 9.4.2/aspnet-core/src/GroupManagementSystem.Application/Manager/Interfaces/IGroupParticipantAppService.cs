@@ -14,8 +14,8 @@ public interface IGroupParticipantAppService : IApplicationService
     Task<APIResponse<List<GroupParticipantResponseDTO>>> ImportParticipant(List<GroupParticipantRequestDTO> dto);
     Task<APIResponse<List<GroupParticipantResponseDTO>>> GetParticipants(GroupParticipantsDTO dto);
     
-    Task<APIResponse<List<GroupParticipantResponseDTO>>> UpdateParticipants(GroupParticipantsUpdateDTO dto);
-    Task<APIResponse<List<GroupParticipantResponseDTO>>> DeleteParticipants(long membId);
+    Task<APIResponse<GroupParticipantResponseDTO>> UpdateParticipants(GroupParticipantsUpdateDTO dto);
+    Task<APIResponse<bool>> DeleteParticipants(long membId);
 
     
 }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Abp.Domain.Uow;
 using Microsoft.AspNetCore.Mvc;
+using Abp.UI;
 
 namespace GroupManagementSystem.Manager.Services
 {
@@ -51,7 +52,7 @@ namespace GroupManagementSystem.Manager.Services
                     };
                 }
 
-                var isExistEmail = await _groupParticipantRepository.FirstOrDefaultAsync(g => g.Email == dto.Email);
+                var isExistEmail = await _groupParticipantRepository.FirstOrDefaultAsync(g => g.Email == dto.Email && g.GroupId == dto.GroupId);
                 if (isExistEmail != null)
                 {
                     return new APIResponse<GroupParticipantResponseDTO>
@@ -72,17 +73,7 @@ namespace GroupManagementSystem.Manager.Services
                 string sequenceCode = (count + 1).ToString("D3");
                 string groupMemberRefNo = $"{GetPrefix(dto.MemberType)}{tenantCode}{groupCode}{sequenceCode}";
 
-                // Create entity
-                // var entity = new GroupParticipant
-                // {
-                //     GroupId = dto.GroupId,
-                //     UserName = dto.UserName,
-                //     Email = dto.Email,
-                //     PhoneNumber = dto.PhoneNumber,
-                //     MemberType = dto.MemberType,
-                //     GroupMemberRefNO = groupMemberRefNo,
-                //     TenantId = AbpSession.TenantId ?? 1 
-                // };
+                
                 var entity = _mapper.Map<GroupParticipant>(dto);
                 entity.TenantId = AbpSession.TenantId ?? 1;
                 entity.GroupMemberRefNO = groupMemberRefNo;
@@ -192,6 +183,10 @@ namespace GroupManagementSystem.Manager.Services
                 {
                     query = query.Where(g => g.MemberType == dto.MemberType);
                 }
+                if (dto.GroupMemberRefNO != null)
+                {
+                    query = query.Where(g => g.GroupMemberRefNO == dto.GroupMemberRefNO);
+                }
     
                 var participants = await query.ToListAsync();
     
@@ -232,14 +227,98 @@ namespace GroupManagementSystem.Manager.Services
             };
         }
 
-        public Task<APIResponse<List<GroupParticipantResponseDTO>>> UpdateParticipants(GroupParticipantsUpdateDTO dto)
+        public async  Task<APIResponse<GroupParticipantResponseDTO>> UpdateParticipants(GroupParticipantsUpdateDTO dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found");
+
+                // Fetch existing entity
+                var existing = await _groupParticipantRepository.FirstOrDefaultAsync(x => x.Id == dto.Id && x.TenantId == tenantId);
+                if (existing == null)
+                {
+                    return new APIResponse<GroupParticipantResponseDTO>
+                    {
+                        message = "Participant not found",
+                        result = null
+                    };
+                }
+
+                // Check if email is already used by another participant
+                var existingWithEmail = await _groupParticipantRepository.FirstOrDefaultAsync(
+                    x => x.Email == dto.Email && x.Id != dto.Id && x.TenantId == tenantId);
+
+                if (existingWithEmail != null)
+                {
+                    return new APIResponse<GroupParticipantResponseDTO>
+                    {
+                        message = "Another participant already uses this email",
+                        result = null
+                    };
+                }
+
+                // Update fields
+                existing.UserName = dto.UserName;
+                existing.Email = dto.Email;
+                existing.PhoneNumber = dto.PhoneNumber;
+
+                // Save changes
+                await _groupParticipantRepository.UpdateAsync(existing);
+
+                // Return updated result
+                var resultDto = _mapper.Map<GroupParticipantResponseDTO>(existing);
+
+                return new APIResponse<GroupParticipantResponseDTO>
+                {
+                    message = "Participant updated successfully",
+                    result = resultDto
+                };
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse<GroupParticipantResponseDTO>
+                {
+                    message = $"Error: {ex.Message}",
+                    result = null
+                };
+            }
         }
 
-        public Task<APIResponse<List<GroupParticipantResponseDTO>>> DeleteParticipants(long membId)
+        public async  Task<APIResponse<bool>> DeleteParticipants(long membId)
         {
-            throw new NotImplementedException();
+    try
+    {
+        var tenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found");
+
+        // Find the participant
+        var existing = await _groupParticipantRepository.FirstOrDefaultAsync(x => x.Id == membId && x.TenantId == tenantId);
+        if (existing == null)
+        {
+            return new APIResponse<bool>
+            {
+                message = "Participant not found",
+                result = false
+            };
         }
+
+        // Delete the participant
+        await _groupParticipantRepository.DeleteAsync(existing);
+
+        return new APIResponse<bool>
+        {
+            message = "Participant deleted successfully",
+            result = true
+        };
+    }
+    catch (Exception ex)
+    {
+        return new APIResponse<bool>
+        {
+            message = $"Error: {ex.Message}",
+            result = false
+        };
+    }
+}
+    
     }
 }

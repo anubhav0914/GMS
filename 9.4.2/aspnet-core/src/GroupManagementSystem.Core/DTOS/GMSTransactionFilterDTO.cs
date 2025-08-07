@@ -6,6 +6,7 @@ public class GMSTransactionFilterDTO
 {
     public string? GroupMemberRefNO { get; set; }
     public DateTime? TransactionDate { get; set; }
-    public long? TransId { get; set; }
     public long? PaymentStructureId { get; set; }
+
+    public long GroupId { get; set; }
 }
