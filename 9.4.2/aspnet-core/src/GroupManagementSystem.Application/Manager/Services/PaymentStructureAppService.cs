@@ -128,8 +128,40 @@ namespace GroupManagementSystem.Manager.Services
             }
         }
 
+        public async Task<APIResponse<PaymentStructureResponseDTO>> UpdatePaymentStructure(PaymentStructureUpdateDTO dto)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(dto.Name) || dto.GroupId <= 0)
+                {
+                    return new APIResponse<PaymentStructureResponseDTO>
+                    {
+                        message = "Invalid input data.",
+                        result = null
+                    };
+                }
 
+                var tenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found.");
 
+                var existing = await _paymentStructureRepository.FirstOrDefaultAsync(
+                    x => x.GroupId == dto.GroupId && x.TenantId == tenantId && x.Id == dto.id);
+
+                if (existing == null)
+                {
+                    return new APIResponse<PaymentStructureResponseDTO>
+                    {
+                        message = "Payment structure not found.",
+                        result = null
+                    };
+                }
+
+                existing.Name = dto.Name;
+                existing.GroupId = dto.GroupId;
+
+                await _paymentStructureRepository.UpdateAsync(existing);
+                await CurrentUnitOfWork.SaveChangesAsync();
+
+                var resultDto = _mapper.Map<PaymentStructureResponseDTO>(existing);
 
 
         public async Task<APIResponse<PaymentStructureResponseDTO>> UpdatePaymentStructure(PaymentStructureUpdateDTO dto)

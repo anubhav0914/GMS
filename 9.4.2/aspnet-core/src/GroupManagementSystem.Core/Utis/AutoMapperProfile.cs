@@ -16,9 +16,5 @@ public class AutoMapperProfile : Profile
         CreateMap<PaymentStructureRequestDTO, PaymentStructure>();
         CreateMap<PaymentStructure, PaymentStructureResponseDTO>();
         CreateMap<TransactionResponseDTO, GMSTransaction>();
-
-
-
-
     }
 }

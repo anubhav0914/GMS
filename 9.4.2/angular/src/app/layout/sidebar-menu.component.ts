@@ -51,10 +51,15 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
             // ),
             
             new MenuItem(
-                this.l('Dash Board'),
+                this.l('DashBoard'),
                 '/app/DashboardSchoolGroup',
                 'fas fa-theater-masks',
                 ''
+            ),
+            new MenuItem(
+                this.l('FeeManagement'),
+                '/app/feesManagement',
+                'fas fa-money-bill',
             ),
             // new MenuItem(
             //     this.l('Tenants'),

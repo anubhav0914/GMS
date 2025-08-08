@@ -1,0 +1,86 @@
+<div class="fee-management-container">
+  <!-- Header Section -->
+  <div class="header">
+    <div class="header-content">
+      <h1 class="title">Fee Management</h1>
+    </div>
+    <button class="add-button" (click)="openModal()">
+      <lucide-icon [img]="Plus" size="16"></lucide-icon>
+      Add Fee Type
+    </button>
+  </div>
+
+  <!-- Modal for Add/Edit -->
+  <div class="modal fade show d-block" *ngIf="showModal" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form (ngSubmit)="saveNewFeeType()" #feeForm="ngForm">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ isEditMode ? 'Edit Fee Type' : 'Add New Fee Type' }}</h5>
+            <button type="button" class="btn-close" (click)="closeModal()">×</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-2">
+              <label for="feeName" class="form-label">Fee Name</label>
+              <input
+                id="feeName"
+                name="name"
+                type="text"
+                class="form-control"
+                [(ngModel)]="newFeeType.name"
+                placeholder="Enter Fee Name"
+                required
+              />
+            </div>
+
+            <!-- Optional: add more fields like amount, frequency, description if needed -->
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="feeForm.invalid" (click)="saveNewFeeType()">
+              {{ isEditMode ? 'Save Changes' : 'Add Fee' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fee Structure Summary Table -->
+  <div class="table-section mt-4">
+    <div class="table-container">
+      <table class="fee-table">
+        <thead>
+          <tr>
+            <th>FEE TYPE</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fee of feeTypes">
+            <td>
+              <div class="fee-type-cell">
+                <div class="fee-type-name">{{ fee['name'] }}</div>
+              </div>
+            </td>
+            <td class="actions-cell">
+              <button class="table-action-btn edit-btn" (click)="onEditFee(fee.id)" title="Edit">
+                <lucide-icon [img]="Edit" size="14"></lucide-icon>
+              </button>
+              <button class="table-action-btn delete-btn" (click)="onDeleteFee(fee.id)" title="Delete">
+                <lucide-icon [img]="Trash2" size="14"></lucide-icon>
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="feeTypes.length === 0">
+            <td colspan="2" class="text-center">No fee types found.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
