@@ -36,7 +36,7 @@ namespace GroupManagementSystem.Manager.Services
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.Amount) || dto.GroupId <= 0)
+                if (string.IsNullOrWhiteSpace(dto.Name) || dto.GroupId <= 0)
                 {
                     return new APIResponse<PaymentStructureResponseDTO>
                     {
@@ -117,17 +117,92 @@ namespace GroupManagementSystem.Manager.Services
             }
         }
 
-
-
-
-
-        public Task<APIResponse<PaymentStructureResponseDTO>> UpdatePaymentStructure(PaymentStructureRequestDTO dto)
+        public async Task<APIResponse<PaymentStructureResponseDTO>> UpdatePaymentStructure(PaymentStructureUpdateDTO dto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(dto.Name) || dto.GroupId <= 0)
+                {
+                    return new APIResponse<PaymentStructureResponseDTO>
+                    {
+                        message = "Invalid input data.",
+                        result = null
+                    };
+                }
+
+                var tenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found.");
+
+                var existing = await _paymentStructureRepository.FirstOrDefaultAsync(
+                    x => x.GroupId == dto.GroupId && x.TenantId == tenantId && x.Id == dto.id);
+
+                if (existing == null)
+                {
+                    return new APIResponse<PaymentStructureResponseDTO>
+                    {
+                        message = "Payment structure not found.",
+                        result = null
+                    };
+                }
+
+                existing.Name = dto.Name;
+                existing.GroupId = dto.GroupId;
+
+                await _paymentStructureRepository.UpdateAsync(existing);
+                await CurrentUnitOfWork.SaveChangesAsync();
+
+                var resultDto = _mapper.Map<PaymentStructureResponseDTO>(existing);
+
+                return new APIResponse<PaymentStructureResponseDTO>
+                {
+                    result = resultDto,
+                    message = "Payment structure updated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse<PaymentStructureResponseDTO>
+                {
+                    message = $"Error: {ex.Message}",
+                    result = null
+                };
+            }
         }
-        public Task<APIResponse<bool>> Delete(long paymentStructureId)
+
+        public async Task<APIResponse<bool>> Delete(long paymentStructureId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found.");
+
+                var entity = await _paymentStructureRepository.FirstOrDefaultAsync(
+                    x => x.Id == paymentStructureId && x.TenantId == tenantId);
+
+                if (entity == null)
+                {
+                    return new APIResponse<bool>
+                    {
+                        result = false,
+                        message = "Payment structure not found."
+                    };
+                }
+
+                await _paymentStructureRepository.DeleteAsync(entity);
+                await CurrentUnitOfWork.SaveChangesAsync();
+
+                return new APIResponse<bool>
+                {
+                    result = true,
+                    message = "Payment structure deleted successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new APIResponse<bool>
+                {
+                    result = false,
+                    message = $"Error: {ex.Message}"
+                };
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ public interface IPaymentStructureAppService : IApplicationService
     Task<APIResponse<PaymentStructureResponseDTO>> CreatePaymentStructure(PaymentStructureRequestDTO dto);
     Task<APIResponse<List<PaymentStructureResponseDTO>>> GetAllPaymentStructure(long groupId);
     Task<APIResponse<bool>> Delete(long paymentStructureId);
-    Task<APIResponse<PaymentStructureResponseDTO>> UpdatePaymentStructure(PaymentStructureRequestDTO dto);
+    Task<APIResponse<PaymentStructureResponseDTO>> UpdatePaymentStructure(PaymentStructureUpdateDTO dto);
 
     
 

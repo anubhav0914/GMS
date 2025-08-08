@@ -212,6 +212,17 @@
   border-bottom: 1px solid #f1f5f9;
 }
 
+.fee-table th:first-child,
+.fee-table td:first-child {
+  width: 100%;
+}
+
+.fee-table .actions-cell,
+.fee-table th:last-child {
+  text-align: right;
+  white-space: nowrap;
+}
+
 .fee-type-cell {
   display: flex;
   flex-direction: column;
@@ -248,6 +259,7 @@
 .actions-cell {
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
 }
 
 .table-action-btn {
@@ -262,7 +274,6 @@
   transition: background-color 0.2s;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .fee-management-container {
     padding: 24px 16px;
