@@ -13,7 +13,6 @@ public class Transaction : FullAuditedEntity<long> ,IMustHaveTenant
     public decimal Amount { get; set; }
     public string Status { get; set; }
     public string Type { get; set; }
-
     public string Mode { get; set; }
     public string ReceiptNumber { get; set; }
     public string TransactionReferenceId { get; set; }

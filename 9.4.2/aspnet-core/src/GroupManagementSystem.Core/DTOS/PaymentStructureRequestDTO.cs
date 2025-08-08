@@ -13,7 +13,4 @@ public class PaymentStructureRequestDTO
     public long GroupId { get; set; }
 }
 
-public class PaymentStructureUpdateDTO : PaymentStructureRequestDTO
-{
-    public int id { get; set; }
-}
+

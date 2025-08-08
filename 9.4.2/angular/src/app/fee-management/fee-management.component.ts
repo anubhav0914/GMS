@@ -13,7 +13,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./fee-management.component.css']
 })
 export class FeeManagementComponent implements OnInit {
-  @Input() groupId: number = 2;
+  @Input() groupId: number = 1;
   showModal = false;
   feeTypes: PaymentStructureResponseDTO[] = [];
   newFeeType: Partial<PaymentStructureRequestDTO> = {};
@@ -71,7 +71,8 @@ export class FeeManagementComponent implements OnInit {
       // Edit mode
       const payload: PaymentStructureUpdateDTO = new PaymentStructureUpdateDTO({
         id: this.editingFeeId,
-        name: this.newFeeType.name,
+        name : this.newFeeType.name,
+        newName : this.newFeeType.name,
         groupId: this.groupId
       });
       this.paymentService.updatePaymentStructure(payload)

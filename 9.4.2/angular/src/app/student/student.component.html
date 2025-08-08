@@ -1,0 +1,119 @@
+<div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Student Management</h3>
+            <p class="text-muted">Manage all student records and information</p>
+        </div>
+        <button class="btn btn-primary rounded-pill px-4" (click)="openModal()">
+            <i class="bi bi-plus-lg"></i> Add Student
+        </button>
+    </div>
+
+    <div class="table-responsive rounded border bg-white shadow-sm">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Name</th>
+                    <th>Reference No.</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let s of paginatedStudents; let i = index">
+                    <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}.</td>
+                    <td>{{ s.userName }}</td>
+                    <td>{{ s.groupMemberRefNO }}</td>
+                    <td>{{ s.email }}</td>
+                    <td>{{ s.phoneNumber }}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-light text-warning me-1"
+                            (click)="openEditModal(s, (currentPage - 1) * itemsPerPage + i)">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button class="btn btn-sm btn-light text-danger"
+                            (click)="deleteStudent((currentPage - 1) * itemsPerPage + i)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="paginatedStudents.length === 0">
+                    <td colspan="6" class="text-center">No students found.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade show d-block" *ngIf="showModal"
+        style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form (ngSubmit)="addStudent()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ isEditMode ? 'Edit Student' :
+                            'Add New Student' }}</h5>
+                        <button type="button" class="btn-close"
+                            (click)="closeModal()">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <input class="form-control"
+                                [(ngModel)]="newStudent.userName" name="name"
+                                placeholder="User Name" required />
+                        </div>
+                        <div class="mb-2">
+                            <select class="form-select"
+                                [(ngModel)]="newStudent.memberType"
+                                name="memberType" required>
+                                <option value="Student">Student</option>
+                                <option value="Teacher">Teacher</option>
+                            </select>
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control"
+                                [(ngModel)]="newStudent.email" name="email"
+                                placeholder="Email" required />
+                        </div>
+                        <div class="mb-2">
+                            <input class="form-control"
+                                [(ngModel)]="newStudent.phoneNumber"
+                                name="phoneNumber" placeholder="Phone Number"
+                                required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            (click)="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            {{ isEditMode ? 'Update Student' : 'Add Student' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <nav class="fixed-bottom bg-white py-2 shadow-sm">
+        <div
+            class="d-flex justify-content-center align-items-center gap-2 py-3">
+            <button class="btn btn-sm btn-light" [disabled]="currentPage === 1"
+                (click)="changePage(currentPage - 1)">
+                « Prev
+            </button>
+
+            <span class="mx-2">
+                {{ currentPage }}
+            </span>
+
+            <button class="btn btn-sm btn-light"
+                [disabled]="currentPage === totalPages"
+                (click)="changePage(currentPage + 1)">
+                Next »
+            </button>
+        </div>
+    </nav>
+
+</div>
