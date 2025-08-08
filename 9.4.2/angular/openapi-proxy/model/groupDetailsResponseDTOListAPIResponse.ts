@@ -7,13 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GroupDetailsResponseDTO } from './groupDetailsResponseDTO';
 
 
-export interface TransactionSummaryDto { 
-    name?: string | null;
-    refNo?: string | null;
-    feeType?: string | null;
-    amount?: number;
-    date?: string;
+export interface GroupDetailsResponseDTOListAPIResponse { 
+    result?: Array<GroupDetailsResponseDTO> | null;
+    message?: string | null;
 }
 

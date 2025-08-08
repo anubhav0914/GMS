@@ -37,6 +37,7 @@ namespace GroupManagementSystem.EntityFrameworkCore
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(typeof(GroupManagementSystemEntityFrameworkModule).GetAssembly());
+
         }
 
         public override void PostInitialize()

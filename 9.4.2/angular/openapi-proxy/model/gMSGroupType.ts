@@ -9,11 +9,10 @@
  */
 
 
-export const MemberType = {
+export const GMSGroupType = {
     NUMBER_0: 0,
     NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3
+    NUMBER_2: 2
 } as const;
-export type MemberType = typeof MemberType[keyof typeof MemberType];
+export type GMSGroupType = typeof GMSGroupType[keyof typeof GMSGroupType];
 

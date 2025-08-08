@@ -17,11 +17,15 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { BooleanAPIResponse } from '../model/booleanAPIResponse';
+// @ts-ignore
 import { GroupParticipantRequestDTO } from '../model/groupParticipantRequestDTO';
 // @ts-ignore
-import { GroupParticipantResponseDTO } from '../model/groupParticipantResponseDTO';
+import { GroupParticipantResponseDTOAPIResponse } from '../model/groupParticipantResponseDTOAPIResponse';
 // @ts-ignore
-import { GroupParticipantResponseDTOPagedResultDto } from '../model/groupParticipantResponseDTOPagedResultDto';
+import { GroupParticipantResponseDTOListAPIResponse } from '../model/groupParticipantResponseDTOListAPIResponse';
+// @ts-ignore
+import { GroupParticipantsUpdateDTO } from '../model/groupParticipantsUpdateDTO';
 // @ts-ignore
 import { MemberType } from '../model/memberType';
 
@@ -42,14 +46,18 @@ export class GroupParticipantProxy extends BaseService {
     }
 
     /**
-     * @param groupParticipantRequestDTO 
+     * @param memberType 
+     * @param groupId 
+     * @param userName 
+     * @param email 
+     * @param phoneNumber 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppGroupParticipantAddGroupMemebrPost(groupParticipantRequestDTO?: GroupParticipantRequestDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupParticipantResponseDTO>;
-    public apiServicesAppGroupParticipantAddGroupMemebrPost(groupParticipantRequestDTO?: GroupParticipantRequestDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupParticipantResponseDTO>>;
-    public apiServicesAppGroupParticipantAddGroupMemebrPost(groupParticipantRequestDTO?: GroupParticipantRequestDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupParticipantResponseDTO>>;
-    public apiServicesAppGroupParticipantAddGroupMemebrPost(groupParticipantRequestDTO?: GroupParticipantRequestDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppGroupParticipantCreateGroupParticipantPost(memberType?: MemberType, groupId?: number, userName?: string, email?: string, phoneNumber?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupParticipantResponseDTOAPIResponse>;
+    public apiServicesAppGroupParticipantCreateGroupParticipantPost(memberType?: MemberType, groupId?: number, userName?: string, email?: string, phoneNumber?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupParticipantResponseDTOAPIResponse>>;
+    public apiServicesAppGroupParticipantCreateGroupParticipantPost(memberType?: MemberType, groupId?: number, userName?: string, email?: string, phoneNumber?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupParticipantResponseDTOAPIResponse>>;
+    public apiServicesAppGroupParticipantCreateGroupParticipantPost(memberType?: MemberType, groupId?: number, userName?: string, email?: string, phoneNumber?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -66,16 +74,36 @@ export class GroupParticipantProxy extends BaseService {
 
         const localVarTransferCache: boolean = options?.transferCache ?? true;
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (memberType !== undefined) {
+            localVarFormParams = localVarFormParams.append('MemberType', <any>memberType) as any || localVarFormParams;
+        }
+        if (groupId !== undefined) {
+            localVarFormParams = localVarFormParams.append('GroupId', <any>groupId) as any || localVarFormParams;
+        }
+        if (userName !== undefined) {
+            localVarFormParams = localVarFormParams.append('UserName', <any>userName) as any || localVarFormParams;
+        }
+        if (email !== undefined) {
+            localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (phoneNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('PhoneNumber', <any>phoneNumber) as any || localVarFormParams;
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -89,12 +117,12 @@ export class GroupParticipantProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/GroupParticipant/AddGroupMemebr`;
+        let localVarPath = `/api/services/app/GroupParticipant/CreateGroupParticipant`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<GroupParticipantResponseDTO>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GroupParticipantResponseDTOAPIResponse>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: groupParticipantRequestDTO,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -106,24 +134,18 @@ export class GroupParticipantProxy extends BaseService {
     }
 
     /**
-     * @param pageNumber 
-     * @param pageSize 
-     * @param memberType 
+     * @param membId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppGroupParticipantGetPaginatedGet(pageNumber?: number, pageSize?: number, memberType?: MemberType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupParticipantResponseDTOPagedResultDto>;
-    public apiServicesAppGroupParticipantGetPaginatedGet(pageNumber?: number, pageSize?: number, memberType?: MemberType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupParticipantResponseDTOPagedResultDto>>;
-    public apiServicesAppGroupParticipantGetPaginatedGet(pageNumber?: number, pageSize?: number, memberType?: MemberType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupParticipantResponseDTOPagedResultDto>>;
-    public apiServicesAppGroupParticipantGetPaginatedGet(pageNumber?: number, pageSize?: number, memberType?: MemberType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppGroupParticipantDeleteParticipantsDelete(membId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<BooleanAPIResponse>;
+    public apiServicesAppGroupParticipantDeleteParticipantsDelete(membId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<BooleanAPIResponse>>;
+    public apiServicesAppGroupParticipantDeleteParticipantsDelete(membId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<BooleanAPIResponse>>;
+    public apiServicesAppGroupParticipantDeleteParticipantsDelete(membId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>pageNumber, 'PageNumber');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>pageSize, 'PageSize');
-        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>memberType, 'MemberType');
+          <any>membId, 'membId');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -152,9 +174,72 @@ export class GroupParticipantProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/GroupParticipant/GetPaginated`;
+        let localVarPath = `/api/services/app/GroupParticipant/DeleteParticipants`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<GroupParticipantResponseDTOPagedResultDto>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<BooleanAPIResponse>('delete', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param memberType 
+     * @param groupMemberRefNO 
+     * @param groupId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiServicesAppGroupParticipantGetParticipantsGet(memberType?: MemberType, groupMemberRefNO?: string, groupId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupParticipantResponseDTOListAPIResponse>;
+    public apiServicesAppGroupParticipantGetParticipantsGet(memberType?: MemberType, groupMemberRefNO?: string, groupId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupParticipantResponseDTOListAPIResponse>>;
+    public apiServicesAppGroupParticipantGetParticipantsGet(memberType?: MemberType, groupMemberRefNO?: string, groupId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupParticipantResponseDTOListAPIResponse>>;
+    public apiServicesAppGroupParticipantGetParticipantsGet(memberType?: MemberType, groupMemberRefNO?: string, groupId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>memberType, 'MemberType');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>groupMemberRefNO, 'GroupMemberRefNO');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>groupId, 'GroupId');
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'text/plain',
+            'application/json',
+            'text/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/services/app/GroupParticipant/GetParticipants`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<GroupParticipantResponseDTOListAPIResponse>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -173,10 +258,10 @@ export class GroupParticipantProxy extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiServicesAppGroupParticipantImportAddGroupMembersPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<Array<GroupParticipantResponseDTO>>;
-    public apiServicesAppGroupParticipantImportAddGroupMembersPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<GroupParticipantResponseDTO>>>;
-    public apiServicesAppGroupParticipantImportAddGroupMembersPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<GroupParticipantResponseDTO>>>;
-    public apiServicesAppGroupParticipantImportAddGroupMembersPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiServicesAppGroupParticipantImportParticipantPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupParticipantResponseDTOListAPIResponse>;
+    public apiServicesAppGroupParticipantImportParticipantPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupParticipantResponseDTOListAPIResponse>>;
+    public apiServicesAppGroupParticipantImportParticipantPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupParticipantResponseDTOListAPIResponse>>;
+    public apiServicesAppGroupParticipantImportParticipantPost(groupParticipantRequestDTO?: Array<GroupParticipantRequestDTO>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -216,12 +301,76 @@ export class GroupParticipantProxy extends BaseService {
             }
         }
 
-        let localVarPath = `/api/services/app/GroupParticipant/ImportAddGroupMembers`;
+        let localVarPath = `/api/services/app/GroupParticipant/ImportParticipant`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<Array<GroupParticipantResponseDTO>>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<GroupParticipantResponseDTOListAPIResponse>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: groupParticipantRequestDTO,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param groupParticipantsUpdateDTO 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiServicesAppGroupParticipantUpdateParticipantsPut(groupParticipantsUpdateDTO?: GroupParticipantsUpdateDTO, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<GroupParticipantResponseDTOAPIResponse>;
+    public apiServicesAppGroupParticipantUpdateParticipantsPut(groupParticipantsUpdateDTO?: GroupParticipantsUpdateDTO, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<GroupParticipantResponseDTOAPIResponse>>;
+    public apiServicesAppGroupParticipantUpdateParticipantsPut(groupParticipantsUpdateDTO?: GroupParticipantsUpdateDTO, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<GroupParticipantResponseDTOAPIResponse>>;
+    public apiServicesAppGroupParticipantUpdateParticipantsPut(groupParticipantsUpdateDTO?: GroupParticipantsUpdateDTO, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            'text/plain',
+            'application/json',
+            'text/json'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json',
+            'text/json',
+            'application/*+json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/services/app/GroupParticipant/UpdateParticipants`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<GroupParticipantResponseDTOAPIResponse>('put', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                body: groupParticipantsUpdateDTO,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

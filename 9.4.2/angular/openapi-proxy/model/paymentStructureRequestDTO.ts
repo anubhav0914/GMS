@@ -10,9 +10,7 @@
 
 
 export interface PaymentStructureRequestDTO { 
-    groupTypeId?: number;
     name?: string | null;
-    amount?: number;
     groupId?: number;
 }
 

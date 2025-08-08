@@ -9,10 +9,9 @@
  */
 
 
-export const TransactionStatus = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2
-} as const;
-export type TransactionStatus = typeof TransactionStatus[keyof typeof TransactionStatus];
+export interface PaymentStructureUpdateDTO { 
+    name?: string | null;
+    newName?: string | null;
+    groupId?: number;
+}
 

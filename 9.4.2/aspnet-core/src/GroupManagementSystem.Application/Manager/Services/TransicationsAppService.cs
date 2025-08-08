@@ -14,16 +14,20 @@ namespace GroupManagementSystem.Manager.Services
     {
         private readonly IRepository<Transaction, long> _transactionRepository;
         private readonly IRepository<GroupParticipant, long> _groupParticipantsRepository;
+        private readonly IGMSTrasactionAppService _gMSTrasactionAppService;
+
 
         private readonly IMapper _mapper;
 
         public TransicationsAppService(
             IRepository<Transaction, long> transactionRepository,
             IRepository<GroupParticipant, long> groupParticipantsRepository,
+            IGMSTrasactionAppService gMSTrasactionAppService,
             IMapper mapper)
         {
             _transactionRepository = transactionRepository;
             _groupParticipantsRepository = groupParticipantsRepository;
+            _gMSTrasactionAppService = gMSTrasactionAppService;
             _mapper = mapper;
         }
 
@@ -50,11 +54,12 @@ namespace GroupManagementSystem.Manager.Services
                 CurrentUnitOfWork.SaveChanges();
 
                 var responseDto = _mapper.Map<TransactionResponseDTO>(result);
-                responseDto.Id = result.Id.ToString();
+                responseDto.Id = result.Id;
 
                 // CALL FOR ENTRY OF THE GMSTransaction here 
-                
 
+                await _gMSTrasactionAppService.AddGMSTransaction(responseDto);
+                
                 return new APIResponse<TransactionResponseDTO>
                 {
                     message = "Transaction Completed Sucessfuly",

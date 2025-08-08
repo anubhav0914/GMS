@@ -36,6 +36,16 @@ namespace GroupManagementSystem.Manager.Services
         {
             try
             {
+                var isGroupExist = await _groupDetailsRepository.FirstOrDefaultAsync(g => g.Id == dto.GroupId);
+
+                if (isGroupExist == null)
+                {
+                    return new APIResponse<PaymentStructureResponseDTO>
+                    {
+                        message = "Invalid GroupId .",
+                        result = null
+                    };
+                }
                 if (string.IsNullOrWhiteSpace(dto.Name) || dto.GroupId <= 0)
                 {
                     return new APIResponse<PaymentStructureResponseDTO>
@@ -44,6 +54,7 @@ namespace GroupManagementSystem.Manager.Services
                         result = null
                     };
                 }
+
 
                 var entity = _mapper.Map<PaymentStructure>(dto);
                 entity.TenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found.");
@@ -146,6 +157,41 @@ namespace GroupManagementSystem.Manager.Services
 
                 existing.Name = dto.Name;
                 existing.GroupId = dto.GroupId;
+
+                await _paymentStructureRepository.UpdateAsync(existing);
+                await CurrentUnitOfWork.SaveChangesAsync();
+
+                var resultDto = _mapper.Map<PaymentStructureResponseDTO>(existing);
+
+
+        public async Task<APIResponse<PaymentStructureResponseDTO>> UpdatePaymentStructure(PaymentStructureUpdateDTO dto)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(dto.Name) || dto.GroupId <= 0)
+                {
+                    return new APIResponse<PaymentStructureResponseDTO>
+                    {
+                        message = "Invalid input data.",
+                        result = null
+                    };
+                }
+
+                var tenantId = AbpSession.TenantId ?? throw new UserFriendlyException("Tenant not found.");
+
+                var existing = await _paymentStructureRepository.FirstOrDefaultAsync(
+                    x => x.GroupId == dto.GroupId && x.TenantId == tenantId && x.Id == dto.GroupId);
+
+                if (existing == null)
+                {
+                    return new APIResponse<PaymentStructureResponseDTO>
+                    {
+                        message = "Payment structure not found.",
+                        result = null
+                    };
+                }
+
+                existing.Name = dto.NewName;
 
                 await _paymentStructureRepository.UpdateAsync(existing);
                 await CurrentUnitOfWork.SaveChangesAsync();

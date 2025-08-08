@@ -7,23 +7,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TransactionType } from './transactionType';
-import { TransactionMode } from './transactionMode';
-import { TransactionStatus } from './transactionStatus';
 
 
 export interface GMSTransactionResponseDTO { 
     id?: number;
-    refNo?: string | null;
-    date?: string;
-    amount?: number;
+    groupMemberRefNO?: string | null;
+    transactionDate?: string;
     transId?: number;
-    status?: TransactionStatus;
-    mode?: TransactionMode;
-    type?: TransactionType;
+    amount?: number;
+    status?: string | null;
+    type?: string | null;
+    mode?: string | null;
+    transactionReferenceId?: string | null;
+    paymentStructureName?: string | null;
     paymentStructureId?: number;
 }
-export namespace GMSTransactionResponseDTO {
-}
-
 

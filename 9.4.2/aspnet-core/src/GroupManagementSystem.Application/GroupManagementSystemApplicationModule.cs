@@ -1,7 +1,11 @@
-﻿using Abp.AutoMapper;
+﻿using System;
+using Abp.AutoMapper;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
+using Castle.MicroKernel.Registration;
 using GroupManagementSystem.Authorization;
+using GroupManagementSystem.Manager.Interfaces;
+using GroupManagementSystem.Manager.Services;
 
 namespace GroupManagementSystem
 {
@@ -20,6 +24,8 @@ namespace GroupManagementSystem
             var thisAssembly = typeof(GroupManagementSystemApplicationModule).GetAssembly();
 
             IocManager.RegisterAssemblyByConvention(thisAssembly);
+            IocManager.IocContainer.Register(Component.For<IGMSTrasactionAppService>().ImplementedBy<GMSTransactionAppService>().LifestyleTransient()
+            .Named(nameof(GMSTransactionAppService)));
 
             Configuration.Modules.AbpAutoMapper().Configurators.Add(
                 // Scan the assembly for classes which inherit from AutoMapper.Profile

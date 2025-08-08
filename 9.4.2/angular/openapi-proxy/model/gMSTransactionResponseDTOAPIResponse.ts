@@ -7,10 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { GMSTransactionResponseDTO } from './gMSTransactionResponseDTO';
 
 
-export interface GroupTypeRequestDTO { 
-    name?: string | null;
-    description?: string | null;
+export interface GMSTransactionResponseDTOAPIResponse { 
+    result?: GMSTransactionResponseDTO;
+    message?: string | null;
 }
 

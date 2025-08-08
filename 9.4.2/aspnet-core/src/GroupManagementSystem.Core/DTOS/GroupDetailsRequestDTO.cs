@@ -21,6 +21,6 @@ public class GroupDetailsRequestDTO
     public long MemberId { get; set; }
     public int TypeId { get; set; }
     public int PolicyId { get; set; }
-    public long GroupTypeId { get; set; }
+    public GMSGroupType GroupType { get; set; }
     public string Frequency { get; set; }
 }

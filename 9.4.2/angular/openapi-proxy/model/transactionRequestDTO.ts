@@ -7,21 +7,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TransactionType } from './transactionType';
-import { TransactionMode } from './transactionMode';
-import { TransactionStatus } from './transactionStatus';
 
 
 export interface TransactionRequestDTO { 
-    refNo?: string | null;
+    groupMemberRefNO?: string | null;
+    targetAccountId?: string | null;
+    transactionDate?: string;
     amount?: number;
-    status?: TransactionStatus;
-    type?: TransactionType;
-    mode?: TransactionMode;
-    tenantId?: number;
-    groupId?: number;
+    transId?: string | null;
+    status?: string | null;
+    type?: string | null;
+    mode?: string | null;
+    receiptNumber?: string | null;
+    transactionReferenceId?: string | null;
+    paymentStructureId?: number;
 }
-export namespace TransactionRequestDTO {
-}
-
 
