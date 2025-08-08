@@ -44,6 +44,8 @@ export * from './roleDtoPagedResultDto';
 export * from './roleEditDto';
 export * from './roleListDto';
 export * from './roleListDtoListResultDto';
+export * from './schoolDashBoardDTO';
+export * from './schoolDashBoardDTOAPIResponse';
 export * from './tenantAvailabilityState';
 export * from './tenantDto';
 export * from './tenantDtoPagedResultDto';

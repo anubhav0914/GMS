@@ -206,6 +206,74 @@ export class ConfigurationServiceProxy {
 }
 
 @Injectable()
+export class DashBoardServicesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    /**
+     * @param groupId (optional) 
+     * @return OK
+     */
+    getSchoolDashBoard(groupId: number | undefined): Observable<SchoolDashBoardDTOAPIResponse> {
+        let url_ = this.baseUrl + "/api/services/app/DashBoardServices/GetSchoolDashBoard?";
+        if (groupId === null)
+            throw new Error("The parameter 'groupId' cannot be null.");
+        else if (groupId !== undefined)
+            url_ += "groupId=" + encodeURIComponent("" + groupId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSchoolDashBoard(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSchoolDashBoard(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<SchoolDashBoardDTOAPIResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<SchoolDashBoardDTOAPIResponse>;
+        }));
+    }
+
+    protected processGetSchoolDashBoard(response: HttpResponseBase): Observable<SchoolDashBoardDTOAPIResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SchoolDashBoardDTOAPIResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+@Injectable()
 export class GMSTransactionServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -5102,6 +5170,116 @@ export class RoleListDtoListResultDto implements IRoleListDtoListResultDto {
 
 export interface IRoleListDtoListResultDto {
     items: RoleListDto[] | undefined;
+}
+
+export class SchoolDashBoardDTO implements ISchoolDashBoardDTO {
+    totalStudent: number;
+    toatalTeacher: number;
+    lastMonthCollections: number;
+    recenTransaction: GMSTransactionResponseDTO[] | undefined;
+
+    constructor(data?: ISchoolDashBoardDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalStudent = _data["totalStudent"];
+            this.toatalTeacher = _data["toatalTeacher"];
+            this.lastMonthCollections = _data["lastMonthCollections"];
+            if (Array.isArray(_data["recenTransaction"])) {
+                this.recenTransaction = [] as any;
+                for (let item of _data["recenTransaction"])
+                    this.recenTransaction.push(GMSTransactionResponseDTO.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): SchoolDashBoardDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new SchoolDashBoardDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalStudent"] = this.totalStudent;
+        data["toatalTeacher"] = this.toatalTeacher;
+        data["lastMonthCollections"] = this.lastMonthCollections;
+        if (Array.isArray(this.recenTransaction)) {
+            data["recenTransaction"] = [];
+            for (let item of this.recenTransaction)
+                data["recenTransaction"].push(item ? item.toJSON() : <any>undefined);
+        }
+        return data;
+    }
+
+    clone(): SchoolDashBoardDTO {
+        const json = this.toJSON();
+        let result = new SchoolDashBoardDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISchoolDashBoardDTO {
+    totalStudent: number;
+    toatalTeacher: number;
+    lastMonthCollections: number;
+    recenTransaction: GMSTransactionResponseDTO[] | undefined;
+}
+
+export class SchoolDashBoardDTOAPIResponse implements ISchoolDashBoardDTOAPIResponse {
+    result: SchoolDashBoardDTO;
+    message: string | undefined;
+
+    constructor(data?: ISchoolDashBoardDTOAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.result = _data["result"] ? SchoolDashBoardDTO.fromJS(_data["result"]) : <any>undefined;
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): SchoolDashBoardDTOAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new SchoolDashBoardDTOAPIResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["result"] = this.result ? this.result.toJSON() : <any>undefined;
+        data["message"] = this.message;
+        return data;
+    }
+
+    clone(): SchoolDashBoardDTOAPIResponse {
+        const json = this.toJSON();
+        let result = new SchoolDashBoardDTOAPIResponse();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISchoolDashBoardDTOAPIResponse {
+    result: SchoolDashBoardDTO;
+    message: string | undefined;
 }
 
 export enum TenantAvailabilityState {

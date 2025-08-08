@@ -7,12 +7,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { SchoolDashBoardDTO } from './schoolDashBoardDTO';
 
 
-export interface PaymentStructureUpdateDTO { 
-    id?: number;
-    name?: string | null;
-    newName?: string | null;
-    groupId?: number;
+export interface SchoolDashBoardDTOAPIResponse { 
+    result?: SchoolDashBoardDTO;
+    message?: string | null;
 }
 

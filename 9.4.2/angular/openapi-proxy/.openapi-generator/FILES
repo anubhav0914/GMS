@@ -5,6 +5,7 @@ api.module.ts
 api/account.service.ts
 api/api.ts
 api/configuration.service.ts
+api/dashBoardServices.service.ts
 api/gMSTransaction.service.ts
 api/groupDetails.service.ts
 api/groupParticipant.service.ts
@@ -66,6 +67,8 @@ model/roleDtoPagedResultDto.ts
 model/roleEditDto.ts
 model/roleListDto.ts
 model/roleListDtoListResultDto.ts
+model/schoolDashBoardDTO.ts
+model/schoolDashBoardDTOAPIResponse.ts
 model/tenantAvailabilityState.ts
 model/tenantDto.ts
 model/tenantDtoPagedResultDto.ts
